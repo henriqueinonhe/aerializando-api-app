@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/node": "^20.2.5",
     "@types/supertest": "^2.0.12",
+    "@vitest/coverage-c8": "^0.31.1",
     "nodemon": "^2.0.22",
     "prisma": "^4.14.1",
     "rimraf": "^5.0.1",
