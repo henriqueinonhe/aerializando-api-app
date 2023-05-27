@@ -1,0 +1,31 @@
+{
+  "name": "tecido-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/server.js",
+  "scripts": {
+    "build": "rimraf ./build && tsc",
+    "start:dev": "npx nodemon",
+    "start": "npm run build && node build/server.js",
+    "test": "DATABASE_URL='postgresql://admin:admin@localhost:5432/tecidodb_test?schema=public' npx prisma migrate reset -f && npx prisma migrate dev && vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "@types/supertest": "^2.0.12",
+    "nodemon": "^2.0.22",
+    "prisma": "^4.14.1",
+    "rimraf": "^5.0.1",
+    "supertest": "^6.3.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "vitest": "^0.31.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.14.1",
+    "fastify": "^4.17.0"
+  }
+}
