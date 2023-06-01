@@ -1,5 +1,4 @@
 
-import { describe, expect, test } from 'vitest'
 import UserRepository from '../../../src/infra/repositories/user-repository'
 
 describe('UserRepository', () => {
@@ -33,6 +32,34 @@ describe('UserRepository', () => {
 
     expect(updatedUser.name).toBe('Jane Doe')
     expect(updatedUser.email).toBe('j@ja.com')
+  })
+
+  describe('findByEmail', () => {
+    test('found user', async () => {
+      const repository = UserRepository();
+
+      const user = await repository.create({
+        name: 'John Doe',
+        email: 'j@j.com',
+        password: '123456',
+      })
+
+      const foundUser = await repository.findByEmail('j@j.com')
+
+      expect(foundUser).toStrictEqual(user)
+
+      describe('when user not found', () => {
+
+      })
+    })
+
+    test('not found user', async () => {
+      const repository = UserRepository();
+
+      const foundUser = await repository.findByEmail('j@j.com')
+
+      expect(foundUser).toBeNull()
+    })
   })
 })
 

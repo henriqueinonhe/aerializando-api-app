@@ -7,6 +7,9 @@ const UserRepository = () => ({
   },
   update: async (user: User) => {
     return await client.user.update({ where: { id: user.id }, data: user })
+  },
+  findByEmail: async (email: string) => {
+    return await client.user.findUnique({ where: { email } })
   }
 })
 

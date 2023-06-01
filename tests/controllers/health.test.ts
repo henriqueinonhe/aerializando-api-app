@@ -1,5 +1,3 @@
-import { afterAll, expect, test } from 'vitest'
-
 import app from "../../src/server"
 import supertest from 'supertest'
 
