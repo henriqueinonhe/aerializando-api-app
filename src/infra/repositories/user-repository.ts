@@ -1,8 +1,9 @@
-import { User } from "../../domain/User"
+import { User } from "../../domain/users/User"
+import { UserRepository } from "../../domain/users/UserRepository"
 import client from "../db/instance"
 
-const UserRepository = () => ({
-  create: async (user: Omit<User, "id">) => {
+const makeUserRepository = (): UserRepository => ({
+  store: async (user: Omit<User, "id">) => {
     return await client.user.create({ data: user })
   },
   update: async (user: User) => {
@@ -13,4 +14,4 @@ const UserRepository = () => ({
   }
 })
 
-export default UserRepository
+export default makeUserRepository

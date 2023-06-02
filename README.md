@@ -12,6 +12,16 @@ Run migrations
 npx prisma migrate dev
 ```
 
+Create migration
+```sh
+npx prisma migrate dev --name {name}
+```
+
+Generate prisma types
+```sh
+npx prisma generate
+```
+
 ## Testing
 
 ```sh

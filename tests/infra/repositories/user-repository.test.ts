@@ -1,11 +1,11 @@
 
-import UserRepository from '../../../src/infra/repositories/user-repository'
+import makeUserRepository from '../../../src/infra/repositories/user-repository'
 
-describe('UserRepository', () => {
-  test('create', async () => {
-    const repository = UserRepository();
+describe('makeUserRepository', () => {
+  test('store', async () => {
+    const repository = makeUserRepository();
 
-    const user = await repository.create({
+    const user = await repository.store({
       name: 'John Doe',
       email: 'j@j.com',
       password: '123456',
@@ -20,9 +20,9 @@ describe('UserRepository', () => {
   })
 
   test('update', async () => {
-    const repository = UserRepository();
+    const repository = makeUserRepository();
 
-    const user = await repository.create({
+    const user = await repository.store({
       name: 'John Doe',
       email: 'j@j.com',
       password: '123456',
@@ -36,9 +36,9 @@ describe('UserRepository', () => {
 
   describe('findByEmail', () => {
     test('found user', async () => {
-      const repository = UserRepository();
+      const repository = makeUserRepository();
 
-      const user = await repository.create({
+      const user = await repository.store({
         name: 'John Doe',
         email: 'j@j.com',
         password: '123456',
@@ -47,14 +47,10 @@ describe('UserRepository', () => {
       const foundUser = await repository.findByEmail('j@j.com')
 
       expect(foundUser).toStrictEqual(user)
-
-      describe('when user not found', () => {
-
-      })
     })
 
     test('not found user', async () => {
-      const repository = UserRepository();
+      const repository = makeUserRepository();
 
       const foundUser = await repository.findByEmail('j@j.com')
 
