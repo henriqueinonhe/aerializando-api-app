@@ -1,17 +1,15 @@
-import fastify from 'fastify'
-import health from './controllers/health'
+import build from "./app";
 
-// Declare a route
-const app = fastify()
+const start = () => {
+  const app = build();
 
-app.get('/health', health)
+  app.listen({ port: 8080 }, (err, address) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log(`Server listening at ${address}`);
+  });
+};
 
-app.listen({ port: 8080 }, (err, address) => {
-  if (err) {
-    console.error(err)
-    process.exit(1)
-  }
-  console.log(`Server listening at ${address}`)
-})
-
-export default app
+start();

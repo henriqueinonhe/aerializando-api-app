@@ -1,4 +1,5 @@
 import makeExerciseRepository from "../../../src/infra/repositories/exercise-repository";
+import { ExerciseTypes } from "../../../src/infra/schemas/exercise-schema";
 
 describe("makeExerciseRepository", () => {
   test("store", async () => {
@@ -6,14 +7,14 @@ describe("makeExerciseRepository", () => {
 
     const exercise = await repository.store({
       name: "Exercise 1",
-      type: "Exercise 1 type",
+      type: ExerciseTypes.STRETCHING_AND_WARM_UP,
     });
 
     expect(exercise).toStrictEqual({
       id: expect.any(Number),
       description: null,
       name: "Exercise 1",
-      type: "Exercise 1 type",
+      type: ExerciseTypes.STRETCHING_AND_WARM_UP,
       videoLink: null,
       videoThumbnail: null,
     });
@@ -24,7 +25,7 @@ describe("makeExerciseRepository", () => {
 
     const exercise = await repository.store({
       name: "Exercise 1",
-      type: "Exercise 1 type",
+      type: ExerciseTypes.STRETCHING_AND_WARM_UP,
     });
 
     const updatedUser = await repository.update({
@@ -48,9 +49,18 @@ describe("makeExerciseRepository", () => {
     test("found exercise", async () => {
       const repository = makeExerciseRepository();
 
-      await repository.store({ name: "Exercise 1", type: "Exercise 1 type" });
-      await repository.store({ name: "Exercise 1", type: "Exercise 1 type" });
-      await repository.store({ name: "Exercise 1", type: "Exercise 1 type" });
+      await repository.store({
+        name: "Exercise 1",
+        type: ExerciseTypes.STRETCHING_AND_WARM_UP,
+      });
+      await repository.store({
+        name: "Exercise 2",
+        type: ExerciseTypes.TISSUE_CONDITIONING,
+      });
+      await repository.store({
+        name: "Exercise 3",
+        type: ExerciseTypes.WARM_UP_AND_CONDITIONING,
+      });
 
       const exercises = await repository.findAll();
 
@@ -72,7 +82,7 @@ describe("makeExerciseRepository", () => {
 
       const exercise = await repository.store({
         name: "Exercise 1",
-        type: "Exercise 1 type",
+        type: ExerciseTypes.STRETCHING_AND_WARM_UP,
       });
 
       await repository.delete(exercise.id);
@@ -86,7 +96,7 @@ describe("makeExerciseRepository", () => {
       const repository = makeExerciseRepository();
 
       expect(async () => {
-        await repository.delete(9_999)
+        await repository.delete(9_999);
       }).rejects.toThrowError();
     });
   });

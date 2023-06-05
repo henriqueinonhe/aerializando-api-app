@@ -1,8 +1,4 @@
-export interface Exercise {
-  id: number
-  type: string
-  name: string
-  description?: string | null
-  videoLink?: string | null
-  videoThumbnail?: string | null
-}
+import z from "zod";
+import { ExerciseSchema } from "../../infra/schemas/exercise-schema";
+
+export type Exercise = z.infer<typeof ExerciseSchema>;
