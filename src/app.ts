@@ -1,7 +1,7 @@
 import fastify from "fastify";
 import health from "./controllers/health";
 import exercisesRoutes from "./controllers/exercises-controller";
-import errorsHandler from "./errors/errorsHandler";
+import errorsHandler from "./errors/errors-handler";
 
 const build = () => {
   // Declare a route

@@ -7,7 +7,7 @@
     "build": "rimraf ./build && tsc",
     "start:dev": "npx nodemon",
     "start": "npm run build && node build/server.js",
-    "test": "DATABASE_URL='postgresql://admin:admin@localhost:5432/tecidodb_test?schema=public' npx prisma migrate reset -f && npx prisma migrate dev && vitest --run",
+    "test": "DATABASE_URL='postgresql://admin:admin@localhost:5432/tecidodb_test?schema=public' npx prisma migrate reset -f && npx prisma migrate dev && vitest",
     "coverage": "vitest run --coverage"
   },
   "keywords": [],
