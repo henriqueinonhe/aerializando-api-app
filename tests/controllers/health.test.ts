@@ -1,16 +1,7 @@
-import app from "../../src/server"
-import supertest from 'supertest'
-
-afterAll(async () => {
-  await app.close()
-})
+const request = require("../test-server");
 
 test('with a running server', async () => {
-  await app.ready()
-
-  const response = await supertest(app.server)
-    .get('/health')
-    .expect(200)
+  const response = await request.get('/health').expect(200)
 
   expect(response.body).toStrictEqual({
     db: 'live',

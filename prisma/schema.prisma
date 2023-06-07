@@ -16,3 +16,12 @@ model User {
   name     String
   password String
 }
+
+model Exercise {
+  id             Int    @id @default(autoincrement())
+  type           String
+  name           String
+  description    String?
+  videoLink      String?
+  videoThumbnail String?
+}
