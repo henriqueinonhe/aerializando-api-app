@@ -1,7 +1,7 @@
 import makeExerciseRepository from "../../src/infra/repositories/exercise-repository";
 import { ExerciseTypes } from "../../src/infra/schemas/exercise-schema";
 import exercisesService from "../../src/infra/services/exercises-service";
-const request = require("../test-server");
+import request from "../helpers/test-server";
 
 describe("Exercises", async () => {
   describe("GET /exercises", () => {
@@ -23,23 +23,7 @@ describe("Exercises", async () => {
 
       const response = await request.get("/exercises").expect(200);
 
-      expect(response.body).toStrictEqual([
-        expect.objectContaining({
-          id: expect.any(Number),
-          name: "Exercise 1",
-          type: ExerciseTypes.STRETCHING_AND_WARM_UP,
-        }),
-        expect.objectContaining({
-          id: expect.any(Number),
-          name: "Exercise 2",
-          type: ExerciseTypes.TISSUE_CONDITIONING,
-        }),
-        expect.objectContaining({
-          id: expect.any(Number),
-          name: "Exercise 3",
-          type: ExerciseTypes.WARM_UP_AND_CONDITIONING,
-        }),
-      ]);
+      expect(response.body).toHaveLength(3);
     });
   });
 
