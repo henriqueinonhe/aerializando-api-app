@@ -1,4 +1,4 @@
-const request = require("../test-server");
+import request from "../helpers/test-server";
 
 test('with a running server', async () => {
   const response = await request.get('/health').expect(200)

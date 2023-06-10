@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import build from "../src/app";
+import build from "../../src/app";
 
 const start = () => {
   const app = build();

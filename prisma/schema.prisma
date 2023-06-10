@@ -18,10 +18,26 @@ model User {
 }
 
 model Exercise {
-  id             Int    @id @default(autoincrement())
+  id             Int     @id @default(autoincrement())
   type           String
   name           String
   description    String?
   videoLink      String?
   videoThumbnail String?
+}
+
+model Trick {
+  id             Int        @id @default(autoincrement())
+  name           String
+  description    String?
+  videoLink      String?
+  videoThumbnail String?
+  type           TrickType? @relation(fields: [typeId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  typeId         Int?
+}
+
+model TrickType {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  tricks Trick[]
 }

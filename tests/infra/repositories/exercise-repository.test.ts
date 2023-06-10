@@ -28,19 +28,18 @@ describe("makeExerciseRepository", () => {
       type: ExerciseTypes.STRETCHING_AND_WARM_UP,
     });
 
-    const updatedUser = await repository.update({
+    const updatedExercise = await repository.update({
       ...exercise,
-      name: "Jane Doe",
       description: "run so fast",
       videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       videoThumbnail: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     });
 
-    expect(updatedUser.description).toBe("run so fast");
-    expect(updatedUser.videoLink).toBe(
+    expect(updatedExercise.description).toBe("run so fast");
+    expect(updatedExercise.videoLink).toBe(
       "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     );
-    expect(updatedUser.videoThumbnail).toBe(
+    expect(updatedExercise.videoThumbnail).toBe(
       "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     );
   });

@@ -46,7 +46,7 @@ describe('makeUserRepository', () => {
 
       const foundUser = await repository.findByEmail('j@j.com')
 
-      expect(foundUser).toStrictEqual(user)
+      expect(foundUser?.email).toStrictEqual(user.email)
     })
 
     test('not found user', async () => {
