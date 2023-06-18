@@ -1,11 +1,8 @@
 import { ClassPlan } from "../../domain/class-plans/ClassPlan";
 import { ClassPlanRepository } from "../../domain/class-plans/ClassPlanRepository";
 import { NotFoundError } from "../../errors/custom-errors";
-import makeClassPlanRepository from "../repositories/class-plan-repository";
 
-const classPlansService = (
-  repository: ClassPlanRepository = makeClassPlanRepository()
-) => ({
+const classPlansService = (repository: ClassPlanRepository) => ({
   store: async (classPlan: Omit<ClassPlan, "id">) => {
     return await repository.store(classPlan);
   },

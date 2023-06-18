@@ -1,9 +1,8 @@
 import { Exercise } from "../../domain/exercises/Exercise";
 import { ExerciseRepository } from "../../domain/exercises/ExerciseRepository";
 import { NotFoundError } from "../../errors/custom-errors";
-import makeExerciseRepository from "../repositories/exercise-repository";
 
-const exercisesService = (repository: ExerciseRepository = makeExerciseRepository()) => ({
+const exercisesService = (repository: ExerciseRepository) => ({
   store: async (exercise: Omit<Exercise, "id">) => {
     return await repository.store(exercise);
   },
