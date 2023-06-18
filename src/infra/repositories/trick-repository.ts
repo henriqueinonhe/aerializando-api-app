@@ -1,15 +1,7 @@
 import { Trick } from "../../domain/tricks/Trick";
 import { TrickRepository } from "../../domain/tricks/TrickRepository";
 import client from "../db/instance";
-
-const parseTrick = (trick: any): Trick => {
-  const { typeId, ...result } = trick;
-  return result;
-};
-
-const parseTricks = (tricks: any[]): Trick[] => {
-  return tricks.map(parseTrick);
-};
+import { parseTrick, parseTricks } from "../parsers/tricks-parsers";
 
 const makeTrickRepository = (): TrickRepository => ({
   findAll: async (): Promise<Trick[]> => {
@@ -54,7 +46,7 @@ const makeTrickRepository = (): TrickRepository => ({
 
     return parseTrick(result);
   },
-  delete: async (id: number): Promise<void> => {
+  remove: async (id: number): Promise<void> => {
     await client.trick.delete({ where: { id } });
   },
 });

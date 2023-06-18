@@ -5,7 +5,7 @@ interface TrickRepository {
   findById: (id: number) => Promise<Trick | null>;
   store: (data: Omit<Trick, "id">) => Promise<Trick>;
   update: (data: Trick) => Promise<Trick>;
-  delete: (id: number) => Promise<void>;
+  remove: (id: number) => Promise<void>;
 }
 
 interface TrickTypeRepository {

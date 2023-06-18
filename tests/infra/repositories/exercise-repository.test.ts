@@ -86,7 +86,7 @@ describe("makeExerciseRepository", () => {
 
       const exerciseFound = await repository.findById(exercise.id);
 
-      expect(exerciseFound.id).toBe(exercise.id);
+      expect(exerciseFound?.id).toBe(exercise.id);
     });
 
     test("not found exercises", async () => {
@@ -98,8 +98,8 @@ describe("makeExerciseRepository", () => {
     });
   });
 
-  describe("delete", async () => {
-    test("deletes exercise", async () => {
+  describe("remove", async () => {
+    test("removes exercise", async () => {
       const repository = makeExerciseRepository();
 
       const exercise = await repository.store({
@@ -107,7 +107,7 @@ describe("makeExerciseRepository", () => {
         type: ExerciseTypes.STRETCHING_AND_WARM_UP,
       });
 
-      await repository.delete(exercise.id);
+      await repository.remove(exercise.id);
 
       const exercises = await repository.findAll();
 
@@ -118,7 +118,7 @@ describe("makeExerciseRepository", () => {
       const repository = makeExerciseRepository();
 
       expect(async () => {
-        await repository.delete(9_999);
+        await repository.remove(9_999);
       }).rejects.toThrowError();
     });
   });

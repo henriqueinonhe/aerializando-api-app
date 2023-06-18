@@ -170,8 +170,8 @@ describe("makeTrickRepository", () => {
     });
   });
 
-  describe("delete", async () => {
-    test("deletes trick", async () => {
+  describe("remove", async () => {
+    test("removes trick", async () => {
       const repository = makeTrickRepository();
 
       const trick = await repository.store({
@@ -179,7 +179,7 @@ describe("makeTrickRepository", () => {
         type: await getNewTrickType(),
       });
 
-      await repository.delete(trick.id);
+      await repository.remove(trick.id);
 
       const tricks = await repository.findAll();
 
@@ -190,7 +190,7 @@ describe("makeTrickRepository", () => {
       const repository = makeTrickRepository();
 
       expect(async () => {
-        await repository.delete(9_999);
+        await repository.remove(9_999);
       }).rejects.toThrowError();
     });
   });

@@ -1,5 +1,21 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from "@prisma/client";
 
-const client = new PrismaClient()
+const clientInstance = () => {
+  if (process.env.SHOW_SQL_LOG === "true") {
+    const client = new PrismaClient({
+      log: [{ emit: "event", level: "query" }],
+    });
 
-export default client
+    client.$on("query", ({ query, params, duration }) => {
+      console.log({ query, params, duration });
+    });
+
+    return client;
+  }
+
+  return new PrismaClient({});
+};
+
+const client = clientInstance();
+
+export default client;

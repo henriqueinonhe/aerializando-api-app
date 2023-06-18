@@ -17,6 +17,23 @@ model User {
   password String
 }
 
+model ClassPlan {
+  id            Int            @id @default(autoincrement())
+  name          String
+  classNumber   String
+  focusType1    String
+  focusType2    String
+  tricksIds     Int[]
+  exerciseBlocs ExerciseBloc[]
+}
+
+model ExerciseBloc {
+  id           Int        @id @default(autoincrement())
+  exercisesIds Int[]
+  classPlan    ClassPlan? @relation(fields: [classPlanId], references: [id])
+  classPlanId  Int?
+}
+
 model Exercise {
   id             Int     @id @default(autoincrement())
   type           String

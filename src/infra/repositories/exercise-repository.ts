@@ -1,24 +1,29 @@
 import { Exercise } from "../../domain/exercises/Exercise";
 import { ExerciseRepository } from "../../domain/exercises/ExerciseRepository";
 import client from "../db/instance";
+import { parseExercise, parseExercises } from "../parsers/exercise-parsers";
 
 const makeExerciseRepository = (): ExerciseRepository => ({
   findAll: async (): Promise<Exercise[]> => {
-    return (await client.exercise.findMany()) as Exercise[];
+    const result = await client.exercise.findMany();
+    return parseExercises(result);
   },
-  findById: async (id: number): Promise<Exercise> => {
-    return (await client.exercise.findUnique({ where: { id } })) as Exercise;
+  findById: async (id: number): Promise<Exercise | null> => {
+    const result = await client.exercise.findUnique({ where: { id } });
+    return result ? parseExercise(result) : null;
   },
   store: async (exercise: Omit<Exercise, "id">): Promise<Exercise> => {
-    return (await client.exercise.create({ data: exercise })) as Exercise;
+    const result = await client.exercise.create({ data: exercise });
+    return parseExercise(result);
   },
   update: async (exercise: Exercise): Promise<Exercise> => {
-    return (await client.exercise.update({
+    const result = await client.exercise.update({
       where: { id: exercise.id },
       data: exercise,
-    })) as Exercise;
+    });
+    return parseExercise(result);
   },
-  delete: async (id: number): Promise<void> => {
+  remove: async (id: number): Promise<void> => {
     await client.exercise.delete({ where: { id } });
   },
 });

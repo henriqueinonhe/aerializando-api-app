@@ -9,7 +9,7 @@ export default async function deleteExerciseController(
   const { id } = request.params as { id: string };
   const service = exercisesService(makeExerciseRepository());
 
-  await service.delete(Number(id));
+  await service.remove(Number(id));
 
   return response.status(204).send();
 }
