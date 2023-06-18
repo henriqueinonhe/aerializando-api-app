@@ -1,8 +1,11 @@
 import { Trick } from "../../domain/tricks/Trick";
 import { TrickRepository } from "../../domain/tricks/TrickRepository";
 import { NotFoundError } from "../../errors/custom-errors";
+import makeTrickRepository from "../repositories/trick-repository";
 
-const tricksService = (repository: TrickRepository) => ({
+const tricksService = (
+  repository: TrickRepository = makeTrickRepository()
+) => ({
   store: async (trick: Omit<Trick, "id">) => {
     return await repository.store(trick);
   },

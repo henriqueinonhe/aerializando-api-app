@@ -1,9 +1,9 @@
-import { ClassPlan, CreateClassPlan } from "./ClassPlan";
+import { ClassPlan } from "./ClassPlan";
 
 interface ClassPlanRepository {
   findAll: () => Promise<ClassPlan[]>; // TODO: paginate? Maybe
   findById: (id: number) => Promise<ClassPlan>;
-  store: (data: Omit<CreateClassPlan, "id">) => Promise<ClassPlan>;
+  store: (data: Omit<ClassPlan, "id">) => Promise<ClassPlan>;
   update: (data: Partial<ClassPlan> & { id: number }) => Promise<ClassPlan>;
   remove: (id: number) => Promise<void>;
 }

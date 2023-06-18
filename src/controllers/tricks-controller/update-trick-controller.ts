@@ -1,13 +1,17 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import makeTrickRepository from "../../infra/repositories/trick-repository";
+import { Repositories } from "../../infra/repositories";
 import { trickSchema } from "../../infra/schemas/trick-schema";
 import tricksService from "../../infra/services/tricks-service";
+import { Request, Response } from "../types";
 
-export default async function updateTrickController(request: FastifyRequest, response: FastifyReply) {
-  const input = trickSchema.parse(request.body);
+export default function updateTrickController({
+  trickRepository,
+}: Repositories) {
+  return async (request: Request, response: Response) => {
+    const input = trickSchema.parse(request.body);
 
-  const service = tricksService(makeTrickRepository());
-  const updatedTrick = await service.update(input);
+    const service = tricksService(trickRepository());
+    const updatedTrick = await service.update(input);
 
-  return response.status(200).send(updatedTrick);
+    return response.status(200).send(updatedTrick);
+  };
 }

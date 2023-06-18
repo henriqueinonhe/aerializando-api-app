@@ -1,15 +1,16 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import makeTrickRepository from "../../infra/repositories/trick-repository";
+import { Repositories } from "../../infra/repositories";
 import tricksService from "../../infra/services/tricks-service";
+import { Request, Response } from "../types";
 
-export default async function deleteTrickController(
-  request: FastifyRequest<{ Params: { id: string } }>,
-  response: FastifyReply
-) {
-  const { id } = request.params;
-  const service = tricksService(makeTrickRepository());
+export default function deleteTrickController({
+  trickRepository,
+}: Repositories) {
+  return async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const service = tricksService(trickRepository());
 
-  await service.remove(Number(id));
+    await service.remove(Number(id));
 
-  return response.status(204).send();
+    return response.status(204).send();
+  };
 }

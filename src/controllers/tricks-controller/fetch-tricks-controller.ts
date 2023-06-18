@@ -1,11 +1,15 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import makeTrickRepository from "../../infra/repositories/trick-repository";
+import { Repositories } from "../../infra/repositories";
 import tricksService from "../../infra/services/tricks-service";
+import { Request, Response } from "../types";
 
-export default async function fetchTricksController(_: FastifyRequest, response: FastifyReply) {
-  const service = tricksService(makeTrickRepository());
+export default function fetchTricksController({
+  trickRepository,
+}: Repositories) {
+  return async (_: Request, response: Response) => {
+    const service = tricksService(trickRepository());
 
-  const tricks = await service.findAll();
+    const tricks = await service.findAll();
 
-  return response.status(200).send(tricks);
+    return response.status(200).send(tricks);
+  };
 }

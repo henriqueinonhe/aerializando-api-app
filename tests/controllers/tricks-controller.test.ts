@@ -1,5 +1,3 @@
-import makeTrickRepository from "../../src/infra/repositories/trick-repository";
-
 import tricksService from "../../src/infra/services/tricks-service";
 import { getNewTrickType } from "../helpers/factories/trick-type-factory";
 import request from "../helpers/test-server";
@@ -7,7 +5,7 @@ import request from "../helpers/test-server";
 describe("Tricks", async () => {
   describe("GET /tricks", () => {
     test("returns 200 OK with all tricks", async () => {
-      const service = tricksService(makeTrickRepository());
+      const service = tricksService();
 
       await service.store({
         name: "Trick 1",
@@ -30,7 +28,7 @@ describe("Tricks", async () => {
 
   describe("GET /tricks/:id", () => {
     test("returns 200 OK with trick", async () => {
-      const service = tricksService(makeTrickRepository());
+      const service = tricksService();
 
       const trick = await service.store({
         name: "Trick 1",
@@ -93,7 +91,7 @@ describe("Tricks", async () => {
 
   describe("PUT /tricks", () => {
     test("returns 200 OK with updated trick", async () => {
-      const service = tricksService(makeTrickRepository());
+      const service = tricksService();
 
       const newExercise = await service.store({
         name: "Trick 1",
@@ -119,7 +117,7 @@ describe("Tricks", async () => {
     });
 
     test("returns 400 bad request if trick is invalid", async () => {
-      const service = tricksService(makeTrickRepository());
+      const service = tricksService();
 
       const newExercise = await service.store({
         name: "Trick 1",
@@ -145,7 +143,7 @@ describe("Tricks", async () => {
 
   describe("DELETE /tricks", () => {
     test("returns 204 no content", async () => {
-      const service = tricksService(makeTrickRepository());
+      const service = tricksService();
 
       const trick = await service.store({
         name: "Trick 1",

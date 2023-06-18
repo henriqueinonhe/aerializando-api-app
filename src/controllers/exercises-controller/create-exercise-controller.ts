@@ -1,13 +1,17 @@
-import { FastifyReply, FastifyRequest } from "fastify";
-import makeExerciseRepository from "../../infra/repositories/exercise-repository";
+import { Repositories } from "../../infra/repositories";
 import { createExerciseSchema } from "../../infra/schemas/exercise-schema";
 import exercisesService from "../../infra/services/exercises-service";
+import { Request, Response } from "../types";
 
-export default async function createExerciseController(request: FastifyRequest, response: FastifyReply) {
-  const input = createExerciseSchema.parse(request.body);
+export default function createExerciseController({
+  exerciseRepository,
+}: Repositories) {
+  return async (request: Request, response: Response) => {
+    const input = createExerciseSchema.parse(request.body);
 
-  const service = exercisesService(makeExerciseRepository());
-  const newExercise = await service.store(input);
+    const service = exercisesService(exerciseRepository());
+    const newExercise = await service.store(input);
 
-  return response.status(201).send(newExercise);
+    return response.status(201).send(newExercise);
+  };
 }
