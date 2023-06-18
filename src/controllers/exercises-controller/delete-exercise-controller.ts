@@ -3,7 +3,7 @@ import makeExerciseRepository from "../../infra/repositories/exercise-repository
 import exercisesService from "../../infra/services/exercises-service";
 
 export default async function deleteExerciseController(
-  request: FastifyRequest | { params: { id: string } },
+  request: FastifyRequest<{ Params: { id: string } }>,
   response: FastifyReply
 ) {
   const { id } = request.params as { id: string };

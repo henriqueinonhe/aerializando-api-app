@@ -15,4 +15,4 @@ export const exerciseSchema = z.object({
   videoThumbnail: z.string().nullish(),
 }).strict()
 
-export const CreateExerciseSchema = exerciseSchema.omit({ id: true })
+export const createExerciseSchema = exerciseSchema.omit({ id: true })

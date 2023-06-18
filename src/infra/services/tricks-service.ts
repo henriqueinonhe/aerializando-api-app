@@ -19,9 +19,9 @@ const tricksService = (repository: TrickRepository) => ({
 
     return trick;
   },
-  delete: async (id: number) => {
+  remove: async (id: number) => {
     try {
-      await repository.delete(id);
+      await repository.remove(id);
     } catch (error: any) {
       if (error.constructor.name === "PrismaClientKnownRequestError")
         throw new NotFoundError(`Trick ${id} not found`);

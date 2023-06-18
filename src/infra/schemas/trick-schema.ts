@@ -17,3 +17,5 @@ export const trickSchema = z
     videoThumbnail: z.string().nullish(),
   })
   .strict();
+
+export const createTrickSchema = trickSchema.omit({ id: true });

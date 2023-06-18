@@ -1,16 +1,7 @@
-import crypto from "crypto";
 import makeTrickRepository from "../../../src/infra/repositories/trick-repository";
-import makeTrickTypeRepository from "../../../src/infra/repositories/trick-type-repository";
+import { getNewTrickType } from "../../helpers/factories/trick-type-factory";
 
 describe("makeTrickRepository", () => {
-  const getNewTrickType = async (name?: string) => {
-    const ticketTypeRepository = makeTrickTypeRepository();
-
-    return await ticketTypeRepository.store({
-      name: name ?? `TicketType_${crypto.randomUUID()}`,
-    });
-  };
-
   describe("store", () => {
     test("stores with a new type", async () => {
       const repository = makeTrickRepository();
@@ -78,7 +69,7 @@ describe("makeTrickRepository", () => {
 
       expect(updatedTrick.name).toBe("Trick update");
       expect(updatedTrick.description).toBe("run so fast");
-      expect(updatedTrick.type.name).toBe('New trick type');
+      expect(updatedTrick.type.name).toBe("New trick type");
       expect(updatedTrick.videoLink).toBe(
         "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       );

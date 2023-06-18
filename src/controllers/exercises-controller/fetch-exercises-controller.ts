@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import makeExerciseRepository from "../../infra/repositories/exercise-repository";
 import exercisesService from "../../infra/services/exercises-service";
 
-export default async function listAllExercisesController(_: FastifyRequest, response: FastifyReply) {
+export default async function fetchExercisesController(_: FastifyRequest, response: FastifyReply) {
   const service = exercisesService(makeExerciseRepository());
 
   const exercises = await service.findAll();

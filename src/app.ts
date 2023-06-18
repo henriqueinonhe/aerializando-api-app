@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import health from "./controllers/health";
 import exercisesRoutes from "./controllers/exercises-controller";
+import tricksRoutes from "./controllers/tricks-controller";
 import errorsHandler from "./errors/errors-handler";
 
 const build = () => {
@@ -9,6 +10,7 @@ const build = () => {
 
   app.get("/health", health);
   app.register(exercisesRoutes);
+  app.register(tricksRoutes);
 
   app.setErrorHandler(function (error, request, reply) {
     errorsHandler(this.log, error, request, reply);
