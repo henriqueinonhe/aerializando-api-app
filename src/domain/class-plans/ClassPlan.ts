@@ -1,4 +1,4 @@
 import z from "zod";
-import { ClassPlanSchema } from "../../infra/schemas/class-plan-schema";
+import { classPlanSchema } from "../../infra/schemas/class-plan-schema";
 
-export type ClassPlan = z.infer<typeof ClassPlanSchema>;
+export type ClassPlan = z.infer<typeof classPlanSchema>;

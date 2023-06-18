@@ -1,6 +1,6 @@
 import z from "zod";
-import { TrickSchema } from "./trick-schema";
-import { ExerciseSchema } from "./exercise-schema";
+import { trickSchema } from "./trick-schema";
+import { exerciseSchema } from "./exercise-schema";
 
 export const FocusTypes = {
   FORCE_CORE: "FORCE_CORE",
@@ -17,18 +17,18 @@ export const FocusTypes = {
   POSTURAL_TECHNIQUE: "POSTURAL_TECHNIQUE",
 } as const;
 
-export const ClassPlanSchema = z
+export const classPlanSchema = z
   .object({
     id: z.number(),
     name: z.string(),
     classNumber: z.string(),
     focusType1: z.nativeEnum(FocusTypes),
     focusType2: z.nativeEnum(FocusTypes),
-    tricks: z.array(TrickSchema),
+    tricks: z.array(trickSchema),
     exerciseBlocs: z.array(
       z.object({
         id: z.number().optional(),
-        exercises: z.array(ExerciseSchema),
+        exercises: z.array(exerciseSchema),
       })
     ),
   })
