@@ -1,41 +1,9 @@
-import { Exercise } from "../../../src/domain/exercises/Exercise";
-import { Trick } from "../../../src/domain/tricks/Trick";
 import repositories from "../../../src/infra/repositories";
 import { FocusTypes } from "../../../src/infra/schemas/class-plan-schema";
-import { ExerciseTypes } from "../../../src/infra/schemas/exercise-schema";
-import { getNewTrickType } from "../../helpers/factories/trick-type-factory";
+import { getExercises } from "../../helpers/factories/exercises-factory";
+import { getTricks } from "../../helpers/factories/tricks-factory";
 
 describe("classPlanRepository", () => {
-  const getExercises = async (): Promise<Exercise[]> => {
-    const repository = repositories.exerciseRepository();
-
-    return [
-      await repository.store({
-        name: "Exercise 1",
-        type: ExerciseTypes.STRETCHING_AND_WARM_UP,
-      }),
-      await repository.store({
-        name: "Exercise 2",
-        type: ExerciseTypes.STRETCHING_AND_WARM_UP,
-      }),
-    ];
-  };
-
-  const getTricks = async (): Promise<Trick[]> => {
-    const repository = repositories.trickRepository();
-
-    return [
-      await repository.store({
-        name: "Trick 1",
-        type: await getNewTrickType(),
-      }),
-      await repository.store({
-        name: "Trick 2",
-        type: await getNewTrickType(),
-      }),
-    ];
-  };
-
   test("store", async () => {
     const repository = repositories.classPlanRepository();
 

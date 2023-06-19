@@ -6,7 +6,7 @@ const classPlansService = (repository: ClassPlanRepository) => ({
   store: async (classPlan: Omit<ClassPlan, "id">) => {
     return await repository.store(classPlan);
   },
-  update: async (classPlan: ClassPlan) => {
+  update: async (classPlan: Partial<ClassPlan> & { id: number }) => {
     return await repository.update(classPlan);
   },
   findAll: async () => {
@@ -15,7 +15,7 @@ const classPlansService = (repository: ClassPlanRepository) => ({
   findById: async (id: number) => {
     const classPlan = await repository.findById(id);
 
-    if (!classPlan) throw new NotFoundError(`ClassPlan ${id} not found`);
+    if (!classPlan) throw new NotFoundError(`Class Plan ${id} not found`);
 
     return classPlan;
   },
@@ -24,7 +24,7 @@ const classPlansService = (repository: ClassPlanRepository) => ({
       await repository.remove(id);
     } catch (error: any) {
       if (error.constructor.name === "PrismaClientKnownRequestError")
-        throw new NotFoundError(`ClassPlan ${id} not found`);
+        throw new NotFoundError(`Class Plan ${id} not found`);
 
       throw error;
     }

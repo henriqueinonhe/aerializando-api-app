@@ -33,3 +33,9 @@ export const classPlanSchema = z
     ),
   })
   .strict();
+
+export const createClassPlanSchema = classPlanSchema.omit({ id: true });
+
+export const updateClassPlanSchema = classPlanSchema
+  .partial()
+  .required({ id: true });

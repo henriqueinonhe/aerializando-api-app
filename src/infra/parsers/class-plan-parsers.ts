@@ -1,6 +1,4 @@
 import { ClassPlan } from "../../domain/class-plans/ClassPlan";
-import { parseExercises } from "./exercise-parsers";
-import { parseTrick } from "./tricks-parsers";
 
 export const parseClassPlan = (
   classPlan: any,
@@ -11,17 +9,7 @@ export const parseClassPlan = (
 
   return {
     ...result,
-    tricks: tricks.map(parseTrick),
-    exerciseBlocs: exerciseBlocsWithExercises.map(
-      (bloc: { id: number; exercises: any[] }) => ({
-        id: bloc.id,
-        exercises: parseExercises(bloc.exercises),
-      })
-    ),
+    tricks,
+    exerciseBlocs: exerciseBlocsWithExercises,
   };
-};
-
-export const parseClassPlans = (classPlans: any[]): ClassPlan[] => {
-  // return classPlans.map(parseClassPlan);
-  return [];
 };
