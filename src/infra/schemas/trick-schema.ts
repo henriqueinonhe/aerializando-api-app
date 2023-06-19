@@ -1,16 +1,16 @@
 import z from "zod";
 
-export const TrickTypeSchema = z
+export const trickTypeSchema = z
   .object({
     id: z.number().nullish(),
     name: z.string(),
   })
   .strict();
 
-export const TrickSchema = z
+export const trickSchema = z
   .object({
     id: z.number(),
-    type: TrickTypeSchema,
+    type: trickTypeSchema,
     name: z.string(),
     description: z.string().nullish(),
     videoLink: z.string().nullish(),
@@ -18,6 +18,4 @@ export const TrickSchema = z
   })
   .strict();
 
-export const CreateTrickSchema = TrickSchema.omit({ id: true }).extend({
-  type: TrickTypeSchema.omit({ id: true }),
-});
+export const createTrickSchema = trickSchema.omit({ id: true });

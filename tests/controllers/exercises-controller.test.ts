@@ -1,4 +1,4 @@
-import makeExerciseRepository from "../../src/infra/repositories/exercise-repository";
+import repositories from "../../src/infra/repositories";
 import { ExerciseTypes } from "../../src/infra/schemas/exercise-schema";
 import exercisesService from "../../src/infra/services/exercises-service";
 import request from "../helpers/test-server";
@@ -6,7 +6,7 @@ import request from "../helpers/test-server";
 describe("Exercises", async () => {
   describe("GET /exercises", () => {
     test("returns 200 OK with all exercises", async () => {
-      const service = exercisesService(makeExerciseRepository());
+      const service = exercisesService(repositories.exerciseRepository());
 
       await service.store({
         name: "Exercise 1",
@@ -29,7 +29,7 @@ describe("Exercises", async () => {
 
   describe("GET /exercises/:id", () => {
     test("returns 200 OK with exercise", async () => {
-      const service = exercisesService(makeExerciseRepository());
+      const service = exercisesService(repositories.exerciseRepository());
 
       const exercise = await service.store({
         name: "Exercise 1",
@@ -73,11 +73,25 @@ describe("Exercises", async () => {
         videoThumbnail: null,
       });
     });
+
+    test("returns 400 bad request if exercise is invalid", async () => {
+      const response = await request
+        .post("/exercises")
+        .send({ type: ExerciseTypes.STRETCHING_AND_WARM_UP })
+        .expect(400);
+
+      expect(response.body).toStrictEqual(
+        expect.objectContaining({
+          error: "Bad Request",
+          message: expect.stringContaining("invalid_type"),
+        })
+      );
+    });
   });
 
   describe("PUT /exercises", () => {
     test("returns 200 OK with updated exercise", async () => {
-      const service = exercisesService(makeExerciseRepository());
+      const service = exercisesService(repositories.exerciseRepository());
 
       const newExercise = await service.store({
         name: "Exercise 1",
@@ -98,11 +112,32 @@ describe("Exercises", async () => {
         videoThumbnail: null,
       });
     });
+
+    test("returns 400 bad request if exercise is invalid", async () => {
+      const service = exercisesService(repositories.exerciseRepository());
+
+      const newExercise = await service.store({
+        name: "Exercise 1",
+        type: ExerciseTypes.STRETCHING_AND_WARM_UP,
+      });
+
+      const response = await request
+        .post("/exercises")
+        .send({ id: newExercise.id, type: ExerciseTypes.STRETCHING_AND_WARM_UP })
+        .expect(400);
+
+      expect(response.body).toStrictEqual(
+        expect.objectContaining({
+          error: "Bad Request",
+          message: expect.stringContaining("invalid_type"),
+        })
+      );
+    });
   });
 
   describe("DELETE /exercises", () => {
     test("returns 204 no content", async () => {
-      const service = exercisesService(makeExerciseRepository());
+      const service = exercisesService(repositories.exerciseRepository());
 
       const exercise = await service.store({
         name: "Exercise 1",

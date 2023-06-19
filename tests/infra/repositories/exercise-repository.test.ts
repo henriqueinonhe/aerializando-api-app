@@ -1,9 +1,9 @@
-import makeExerciseRepository from "../../../src/infra/repositories/exercise-repository";
+import repositories from "../../../src/infra/repositories";
 import { ExerciseTypes } from "../../../src/infra/schemas/exercise-schema";
 
-describe("makeExerciseRepository", () => {
+describe("exerciseRepository", () => {
   test("store", async () => {
-    const repository = makeExerciseRepository();
+    const repository = repositories.exerciseRepository();
 
     const exercise = await repository.store({
       name: "Exercise 1",
@@ -21,7 +21,7 @@ describe("makeExerciseRepository", () => {
   });
 
   test("update", async () => {
-    const repository = makeExerciseRepository();
+    const repository = repositories.exerciseRepository();
 
     const exercise = await repository.store({
       name: "Exercise 1",
@@ -46,7 +46,7 @@ describe("makeExerciseRepository", () => {
 
   describe("findAll", () => {
     test("found exercises", async () => {
-      const repository = makeExerciseRepository();
+      const repository = repositories.exerciseRepository();
 
       await repository.store({
         name: "Exercise 1",
@@ -67,7 +67,7 @@ describe("makeExerciseRepository", () => {
     });
 
     test("not found exercises", async () => {
-      const repository = makeExerciseRepository();
+      const repository = repositories.exerciseRepository();
 
       const exercises = await repository.findAll();
 
@@ -77,7 +77,7 @@ describe("makeExerciseRepository", () => {
 
   describe("findById", () => {
     test("found exercise", async () => {
-      const repository = makeExerciseRepository();
+      const repository = repositories.exerciseRepository();
 
       const exercise = await repository.store({
         name: "Exercise 1",
@@ -86,11 +86,11 @@ describe("makeExerciseRepository", () => {
 
       const exerciseFound = await repository.findById(exercise.id);
 
-      expect(exerciseFound.id).toBe(exercise.id);
+      expect(exerciseFound?.id).toBe(exercise.id);
     });
 
     test("not found exercises", async () => {
-      const repository = makeExerciseRepository();
+      const repository = repositories.exerciseRepository();
 
       const exerciseFound = await repository.findById(9_999);
 
@@ -98,16 +98,16 @@ describe("makeExerciseRepository", () => {
     });
   });
 
-  describe("delete", async () => {
-    test("deletes exercise", async () => {
-      const repository = makeExerciseRepository();
+  describe("remove", async () => {
+    test("removes exercise", async () => {
+      const repository = repositories.exerciseRepository();
 
       const exercise = await repository.store({
         name: "Exercise 1",
         type: ExerciseTypes.STRETCHING_AND_WARM_UP,
       });
 
-      await repository.delete(exercise.id);
+      await repository.remove(exercise.id);
 
       const exercises = await repository.findAll();
 
@@ -115,10 +115,10 @@ describe("makeExerciseRepository", () => {
     });
 
     test("not found exercise", async () => {
-      const repository = makeExerciseRepository();
+      const repository = repositories.exerciseRepository();
 
       expect(async () => {
-        await repository.delete(9_999);
+        await repository.remove(9_999);
       }).rejects.toThrowError();
     });
   });

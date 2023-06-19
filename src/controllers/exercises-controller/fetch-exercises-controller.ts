@@ -2,15 +2,14 @@ import { Repositories } from "../../infra/repositories";
 import exercisesService from "../../infra/services/exercises-service";
 import { Request, Response } from "../types";
 
-export default function findExerciseController({
+export default function fetchExercisesController({
   exerciseRepository,
 }: Repositories) {
-  return async (request: Request, response: Response) => {
-    const { id } = request.params;
+  return async (_: Request, response: Response) => {
     const service = exercisesService(exerciseRepository());
 
-    const exercise = await service.findById(Number(id));
+    const exercises = await service.findAll();
 
-    return response.status(200).send(exercise);
+    return response.status(200).send(exercises);
   };
 }

@@ -3,9 +3,10 @@ import { Trick, TrickType } from "./Trick";
 interface TrickRepository {
   findAll: () => Promise<Trick[]>; // TODO: paginate? Maybe
   findById: (id: number) => Promise<Trick | null>;
+  findInBatch: (ids: number[]) => Promise<Trick[]>;
   store: (data: Omit<Trick, "id">) => Promise<Trick>;
   update: (data: Trick) => Promise<Trick>;
-  delete: (id: number) => Promise<void>;
+  remove: (id: number) => Promise<void>;
 }
 
 interface TrickTypeRepository {

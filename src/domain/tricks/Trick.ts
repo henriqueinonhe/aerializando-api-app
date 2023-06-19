@@ -1,6 +1,6 @@
 import z from "zod";
-import { TrickSchema, TrickTypeSchema } from "../../infra/schemas/trick-schema";
+import { trickSchema, trickTypeSchema } from "../../infra/schemas/trick-schema";
 
-export type Trick = z.infer<typeof TrickSchema>;
+export type Trick = z.infer<typeof trickSchema>;
 
-export type TrickType = z.infer<typeof TrickTypeSchema>;
+export type TrickType = z.infer<typeof trickTypeSchema>;

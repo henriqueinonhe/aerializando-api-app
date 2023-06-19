@@ -6,7 +6,7 @@ export const ExerciseTypes = {
   TISSUE_CONDITIONING: 'TISSUE_CONDITIONING',
 } as const
 
-export const ExerciseSchema = z.object({
+export const exerciseSchema = z.object({
   id: z.number(),
   type: z.nativeEnum(ExerciseTypes),
   name: z.string(),
@@ -15,4 +15,4 @@ export const ExerciseSchema = z.object({
   videoThumbnail: z.string().nullish(),
 }).strict()
 
-export const CreateExerciseSchema = ExerciseSchema.omit({ id: true })
+export const createExerciseSchema = exerciseSchema.omit({ id: true })

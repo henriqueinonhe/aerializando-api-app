@@ -1,13 +1,13 @@
 import { Repositories } from "../../infra/repositories";
-import exercisesService from "../../infra/services/exercises-service";
+import tricksService from "../../infra/services/tricks-service";
 import { Request, Response } from "../types";
 
-export default function deleteExerciseController({
-  exerciseRepository,
+export default function deleteTrickController({
+  trickRepository,
 }: Repositories) {
   return async (request: Request, response: Response) => {
-    const { id } = request.params as { id: string };
-    const service = exercisesService(exerciseRepository());
+    const { id } = request.params;
+    const service = tricksService(trickRepository());
 
     await service.remove(Number(id));
 
