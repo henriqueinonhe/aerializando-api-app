@@ -23,34 +23,36 @@ model ClassPlan {
   classNumber   String
   focusType1    String
   focusType2    String
-  tricksIds     Int[]
+  tricks        Trick[]
   exerciseBlocs ExerciseBloc[]
 }
 
 model ExerciseBloc {
-  id           Int        @id @default(autoincrement())
-  exercisesIds Int[]
-  classPlan    ClassPlan? @relation(fields: [classPlanId], references: [id])
-  classPlanId  Int?
+  id          Int        @id @default(autoincrement())
+  exercises   Exercise[]
+  classPlan   ClassPlan  @relation(fields: [classPlanId], references: [id], onDelete: Cascade)
+  classPlanId Int
 }
 
 model Exercise {
-  id             Int     @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   type           String
   name           String
   description    String?
   videoLink      String?
   videoThumbnail String?
+  exerciseBlocs  ExerciseBloc[]
 }
 
 model Trick {
-  id             Int        @id @default(autoincrement())
+  id             Int         @id @default(autoincrement())
   name           String
   description    String?
   videoLink      String?
   videoThumbnail String?
-  type           TrickType? @relation(fields: [typeId], references: [id], onDelete: SetNull, onUpdate: SetNull)
+  type           TrickType?  @relation(fields: [typeId], references: [id], onDelete: SetNull, onUpdate: SetNull)
   typeId         Int?
+  classPlans     ClassPlan[]
 }
 
 model TrickType {

@@ -27,14 +27,14 @@ npx prisma generate
 ```sh
 npm run test
 # Or a specific test
-npm run test <path>
+npm run test {path}
 ```
 
 Coverage
 ```sh
 npm run test
 # Or a specific test
-npm run test <path>
+npm run test {path}
 ```
 
 
