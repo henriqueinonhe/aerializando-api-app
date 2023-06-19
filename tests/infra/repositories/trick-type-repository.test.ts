@@ -1,10 +1,10 @@
 import crypto from "crypto";
-import makeTrickTypeRepository from "../../../src/infra/repositories/trick-type-repository";
+import repositories from "../../../src/infra/repositories";
 
-describe("makeTrickTypeRepository", () => {
+describe("trickTypeRepository", () => {
   describe("store", async () => {
     test("creates trick type", async () => {
-      const repository = makeTrickTypeRepository();
+      const repository = repositories.trickTypeRepository();
 
       const trick = await repository.store({
         name: `Foot key ${crypto.randomUUID()}`,
@@ -17,9 +17,11 @@ describe("makeTrickTypeRepository", () => {
     });
 
     test("throws if trick type already exists", async () => {
-      const repository = makeTrickTypeRepository();
+      const repository = repositories.trickTypeRepository();
 
-      const trick = await repository.store({ name: `Foot key ${crypto.randomUUID()}` });
+      const trick = await repository.store({
+        name: `Foot key ${crypto.randomUUID()}`,
+      });
 
       await expect(
         repository.store({ name: trick.name })
@@ -29,7 +31,7 @@ describe("makeTrickTypeRepository", () => {
 
   describe("findAll", () => {
     test("found tricks", async () => {
-      const repository = makeTrickTypeRepository();
+      const repository = repositories.trickTypeRepository();
 
       await repository.store({ name: `Foot key ${crypto.randomUUID()}` });
       await repository.store({ name: `Foot key ${crypto.randomUUID()}` });
@@ -41,7 +43,7 @@ describe("makeTrickTypeRepository", () => {
     });
 
     test("not found tricks", async () => {
-      const repository = makeTrickTypeRepository();
+      const repository = repositories.trickTypeRepository();
 
       const tricks = await repository.findAll();
 

@@ -1,10 +1,10 @@
-import makeTrickRepository from "../../../src/infra/repositories/trick-repository";
+import repositories from "../../../src/infra/repositories";
 import { getNewTrickType } from "../../helpers/factories/trick-type-factory";
 
-describe("makeTrickRepository", () => {
+describe("trickRepository", () => {
   describe("store", () => {
     test("stores with a new type", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       const trick = await repository.store({
         name: "Trick 1",
@@ -27,7 +27,7 @@ describe("makeTrickRepository", () => {
     });
 
     test("stores with existent type", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
       const trickType = "Foot key";
 
       const trick = await repository.store({
@@ -51,7 +51,7 @@ describe("makeTrickRepository", () => {
 
   describe("update", () => {
     test("updates with a new type", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       const trick = await repository.store({
         name: "Trick 1",
@@ -79,7 +79,7 @@ describe("makeTrickRepository", () => {
     });
 
     test("updates with existent type", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
       const trickType = "Foot key 2";
 
       const trick = await repository.store({
@@ -109,7 +109,7 @@ describe("makeTrickRepository", () => {
 
   describe("findAll", () => {
     test("found tricks", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       await repository.store({
         name: "Trick 1",
@@ -130,7 +130,7 @@ describe("makeTrickRepository", () => {
     });
 
     test("not found tricks", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       const tricks = await repository.findAll();
 
@@ -140,7 +140,7 @@ describe("makeTrickRepository", () => {
 
   describe("findById", () => {
     test("found trick", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       const trick = await repository.store({
         name: "Trick 1",
@@ -153,7 +153,7 @@ describe("makeTrickRepository", () => {
     });
 
     test("not found tricks", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       const trickFound = await repository.findById(9_999);
 
@@ -163,7 +163,7 @@ describe("makeTrickRepository", () => {
 
   describe("remove", async () => {
     test("removes trick", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       const trick = await repository.store({
         name: "Trick 1",
@@ -178,7 +178,7 @@ describe("makeTrickRepository", () => {
     });
 
     test("not found trick", async () => {
-      const repository = makeTrickRepository();
+      const repository = repositories.trickRepository();
 
       expect(async () => {
         await repository.remove(9_999);

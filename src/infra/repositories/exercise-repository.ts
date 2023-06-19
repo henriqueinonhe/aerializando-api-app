@@ -8,6 +8,10 @@ const makeExerciseRepository = (): ExerciseRepository => ({
     const result = await client.exercise.findMany();
     return parseExercises(result);
   },
+  findInBatch: async (ids: number[]): Promise<Exercise[]> => {
+    const result = await client.exercise.findMany({ where: { id: { in: ids } } });
+    return parseExercises(result);
+  },
   findById: async (id: number): Promise<Exercise | null> => {
     const result = await client.exercise.findUnique({ where: { id } });
     return result ? parseExercise(result) : null;

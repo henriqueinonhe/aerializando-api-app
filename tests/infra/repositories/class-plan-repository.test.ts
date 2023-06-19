@@ -1,14 +1,13 @@
 import { Exercise } from "../../../src/domain/exercises/Exercise";
-import makeClassPlanRepository from "../../../src/infra/repositories/class-plan-repository";
-import makeExerciseRepository from "../../../src/infra/repositories/exercise-repository";
+import { Trick } from "../../../src/domain/tricks/Trick";
+import repositories from "../../../src/infra/repositories";
 import { FocusTypes } from "../../../src/infra/schemas/class-plan-schema";
 import { ExerciseTypes } from "../../../src/infra/schemas/exercise-schema";
-import makeTrickRepository from "../../../src/infra/repositories/trick-repository";
-import { Trick } from "../../../src/domain/tricks/Trick";
+import { getNewTrickType } from "../../helpers/factories/trick-type-factory";
 
-describe("makeClassPlanRepository", () => {
+describe("classPlanRepository", () => {
   const getExercises = async (): Promise<Exercise[]> => {
-    const repository = makeExerciseRepository();
+    const repository = repositories.exerciseRepository();
 
     return [
       await repository.store({
@@ -23,26 +22,22 @@ describe("makeClassPlanRepository", () => {
   };
 
   const getTricks = async (): Promise<Trick[]> => {
-    const repository = makeTrickRepository();
+    const repository = repositories.trickRepository();
 
     return [
       await repository.store({
         name: "Trick 1",
-        type: {
-          name: "New Trick type 1",
-        },
+        type: await getNewTrickType(),
       }),
       await repository.store({
         name: "Trick 2",
-        type: {
-          name: "New Trick type 2",
-        },
+        type: await getNewTrickType(),
       }),
     ];
   };
 
   test("store", async () => {
-    const repository = makeClassPlanRepository();
+    const repository = repositories.classPlanRepository();
 
     const classPlan = await repository.store({
       name: "Plan 1",
@@ -60,7 +55,7 @@ describe("makeClassPlanRepository", () => {
   });
 
   test("update", async () => {
-    const repository = makeClassPlanRepository();
+    const repository = repositories.classPlanRepository();
 
     const classPlan = await repository.store({
       name: "Plan 1",
@@ -90,5 +85,106 @@ describe("makeClassPlanRepository", () => {
     expect(updatedClassPlan.exerciseBlocs).toHaveLength(2);
     expect(updatedClassPlan.exerciseBlocs[0].exercises).toHaveLength(1);
     expect(updatedClassPlan.exerciseBlocs[1].exercises).toHaveLength(2);
+  });
+
+  describe("findAll", () => {
+    test("found class plans", async () => {
+      const repository = repositories.classPlanRepository();
+
+      await repository.store({
+        name: "Plan 1",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "1",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      await repository.store({
+        name: "Plan 2",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "2",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      await repository.store({
+        name: "Plan 3",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "3",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      const classPlans = await repository.findAll();
+
+      expect(classPlans).toHaveLength(3);
+    });
+
+    test("not found class plans", async () => {
+      const repository = repositories.classPlanRepository();
+
+      const classPlans = await repository.findAll();
+
+      expect(classPlans).toHaveLength(0);
+    });
+  });
+
+  describe("findById", () => {
+    test("found class plan", async () => {
+      const repository = repositories.classPlanRepository();
+
+      const classPlan = await repository.store({
+        name: "Plan 1",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "1",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      const classPlanFound = await repository.findById(classPlan.id);
+
+      expect(classPlanFound?.id).toBe(classPlan.id);
+    });
+
+    test("not found exercises", async () => {
+      const repository = repositories.classPlanRepository();
+
+      const classPlanFound = await repository.findById(9_999);
+
+      expect(classPlanFound).toBeNull();
+    });
+  });
+
+  describe("remove", async () => {
+    test("removes class plan", async () => {
+      const repository = repositories.classPlanRepository();
+
+      const classPlan = await repository.store({
+        name: "Plan 1",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "1",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      await repository.remove(classPlan.id);
+
+      const exercises = await repository.findAll();
+
+      expect(exercises).toHaveLength(0);
+    });
+
+    test("not found class plan", async () => {
+      const repository = repositories.classPlanRepository();
+
+      expect(async () => {
+        await repository.remove(9_999);
+      }).rejects.toThrowError();
+    });
   });
 });

@@ -1,45 +1,43 @@
 import { Prisma } from "@prisma/client";
+import repositories from ".";
 import { ClassPlan } from "../../domain/class-plans/ClassPlan";
 import { ClassPlanRepository } from "../../domain/class-plans/ClassPlanRepository";
+import { Trick } from "../../domain/tricks/Trick";
 import client from "../db/instance";
-import { parseClassPlan, parseClassPlans } from "../parsers/class-plan-parsers";
-
-const loadExercisesAndTricks = async (
-  tricksIds: number[],
-  exerciseBlocs: any[]
-): Promise<{ tricks: any[]; exerciseBlocs: any[] }> => {
-  const tricks =
-    (await client.$queryRaw`SELECT * FROM "Trick" WHERE "id" IN (${Prisma.join(
-      tricksIds
-    )});`) as any[];
-  const promises = exerciseBlocs.map(async ({ id, exercisesIds }) => {
-    const dbExercises =
-      await client.$queryRaw`SELECT * FROM "Exercise" WHERE "id" IN (${Prisma.join(
-        exercisesIds
-      )});`;
-
-    return {
-      id,
-      exercises: dbExercises,
-    };
-  });
-  const exerciseBlocsWithExercises = await Promise.all(promises);
-
-  return { tricks, exerciseBlocs: exerciseBlocsWithExercises };
-};
+import { parseClassPlan } from "../parsers/class-plan-parsers";
 
 const makeClassPlanRepository = (): ClassPlanRepository => {
   const findAll = async (): Promise<ClassPlan[]> => {
-    const result = await client.classPlan.findMany({});
+    const result = await client.classPlan.findMany({
+      include: { exerciseBlocs: true },
+    });
 
-    return parseClassPlans(result);
+    const promises = result.map(async (classPlan) => {
+      const result = await loadExercisesAndTricks(
+        classPlan.tricksIds,
+        classPlan.exerciseBlocs
+      );
+
+      return parseClassPlan(classPlan, result.tricks, result.exerciseBlocs);
+    });
+
+    return await Promise.all(promises);
   };
 
-  const findById = async (id: number): Promise<ClassPlan> => {
-    const result = await client.classPlan.findUnique({ where: { id } });
+  const findById = async (id: number): Promise<ClassPlan | null> => {
+    const classPlan = await client.classPlan.findUnique({
+      where: { id },
+      include: { exerciseBlocs: true },
+    });
 
-    return {} as ClassPlan;
-    // return parseClassPlan(result);
+    if (!classPlan) return null;
+
+    const result = await loadExercisesAndTricks(
+      classPlan.tricksIds,
+      classPlan.exerciseBlocs
+    );
+
+    return parseClassPlan(classPlan, result.tricks, result.exerciseBlocs);
   };
 
   const store = async (
@@ -122,6 +120,26 @@ const makeClassPlanRepository = (): ClassPlanRepository => {
 
   const remove = async (id: number): Promise<void> => {
     await client.classPlan.delete({ where: { id } });
+  };
+
+  const loadExercisesAndTricks = async (
+    tricksIds: number[],
+    exerciseBlocs: any[]
+  ): Promise<{
+    tricks: Trick[];
+    exerciseBlocs: ClassPlan["exerciseBlocs"];
+  }> => {
+    const tricks = await repositories.trickRepository().findInBatch(tricksIds);
+    const promises = exerciseBlocs.map(async ({ id, exercisesIds }) => {
+      const exercises = await repositories
+        .exerciseRepository()
+        .findInBatch(exercisesIds);
+
+      return { id, exercises };
+    });
+    const exerciseBlocsWithExercises = await Promise.all(promises);
+
+    return { tricks, exerciseBlocs: exerciseBlocsWithExercises };
   };
 
   return {

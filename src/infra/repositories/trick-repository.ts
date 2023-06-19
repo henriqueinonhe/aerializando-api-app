@@ -8,6 +8,10 @@ const makeTrickRepository = (): TrickRepository => ({
     const result = await client.trick.findMany({ include: { type: true } });
     return parseTricks(result);
   },
+  findInBatch: async (ids: number[]): Promise<Trick[]> => {
+    const result = await client.trick.findMany({ where: { id: { in: ids } } });
+    return parseTricks(result);
+  },
   findById: async (id: number): Promise<Trick | null> => {
     const result = await client.trick.findUnique({
       where: { id },
