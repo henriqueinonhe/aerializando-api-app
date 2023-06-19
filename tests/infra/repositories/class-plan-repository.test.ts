@@ -22,37 +22,95 @@ describe("classPlanRepository", () => {
     expect(classPlan.exerciseBlocs[0].exercises).toHaveLength(2);
   });
 
-  test("update", async () => {
-    const repository = repositories.classPlanRepository();
+  describe("update", async () => {
+    test("only updates tricks", async () => {
+      const repository = repositories.classPlanRepository();
 
-    const classPlan = await repository.store({
-      name: "Plan 1",
-      focusType1: FocusTypes.AMBIDEXTERITY,
-      focusType2: FocusTypes.GENERAL_FLEXIBILITY,
-      classNumber: "1",
-      tricks: await getTricks(),
-      exerciseBlocs: [{ exercises: await getExercises() }],
+      const classPlan = await repository.store({
+        name: "Plan 1",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "1",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      const updatedClassPlan = await repository.update({
+        id: classPlan.id,
+        name: "Plan 2",
+        classNumber: "1",
+        tricks: [classPlan.tricks[0]],
+      });
+
+      expect(updatedClassPlan.name).toBe("Plan 2");
+      expect(updatedClassPlan.tricks).toHaveLength(1);
+      expect(updatedClassPlan.exerciseBlocs).toHaveLength(1);
     });
 
-    const updatedClassPlan = await repository.update({
-      id: classPlan.id,
-      name: "Plan 2",
-      classNumber: "1",
-      tricks: [classPlan.tricks[0]],
-      exerciseBlocs: [
-        {
-          id: classPlan.exerciseBlocs[0].id,
-          exercises: [classPlan.exerciseBlocs[0].exercises[0]],
-        },
-        { exercises: classPlan.exerciseBlocs[0].exercises },
-      ],
+    test("only updates exercise blocs", async () => {
+      const repository = repositories.classPlanRepository();
+
+      const classPlan = await repository.store({
+        name: "Plan 1",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "1",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      const updatedClassPlan = await repository.update({
+        id: classPlan.id,
+        name: "Plan 2",
+        classNumber: "1",
+        exerciseBlocs: [
+          {
+            id: classPlan.exerciseBlocs[0].id,
+            exercises: [classPlan.exerciseBlocs[0].exercises[0]],
+          },
+          { exercises: classPlan.exerciseBlocs[0].exercises },
+        ],
+      });
+
+      expect(updatedClassPlan.name).toBe("Plan 2");
+      expect(updatedClassPlan.tricks).toHaveLength(2);
+      expect(updatedClassPlan.exerciseBlocs).toHaveLength(2);
+      expect(updatedClassPlan.exerciseBlocs[0].exercises).toHaveLength(1);
+      expect(updatedClassPlan.exerciseBlocs[1].exercises).toHaveLength(2);
     });
 
-    expect(updatedClassPlan.name).toBe("Plan 2");
-    expect(updatedClassPlan.tricks).toHaveLength(1);
-    expect(updatedClassPlan.exerciseBlocs).toHaveLength(2);
-    expect(updatedClassPlan.exerciseBlocs[0].exercises).toHaveLength(1);
-    expect(updatedClassPlan.exerciseBlocs[1].exercises).toHaveLength(2);
+    test("updates tricks and exercise blocs", async () => {
+      const repository = repositories.classPlanRepository();
+
+      const classPlan = await repository.store({
+        name: "Plan 1",
+        focusType1: FocusTypes.AMBIDEXTERITY,
+        focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        classNumber: "1",
+        tricks: await getTricks(),
+        exerciseBlocs: [{ exercises: await getExercises() }],
+      });
+
+      const updatedClassPlan = await repository.update({
+        id: classPlan.id,
+        name: "Plan 2",
+        classNumber: "1",
+        tricks: [classPlan.tricks[0]],
+        exerciseBlocs: [
+          {
+            id: classPlan.exerciseBlocs[0].id,
+            exercises: [classPlan.exerciseBlocs[0].exercises[0]],
+          },
+          { exercises: classPlan.exerciseBlocs[0].exercises },
+        ],
+      });
+
+      expect(updatedClassPlan.name).toBe("Plan 2");
+      expect(updatedClassPlan.tricks).toHaveLength(1);
+      expect(updatedClassPlan.exerciseBlocs).toHaveLength(2);
+      expect(updatedClassPlan.exerciseBlocs[0].exercises).toHaveLength(1);
+      expect(updatedClassPlan.exerciseBlocs[1].exercises).toHaveLength(2);
+    });
   });
 
   describe("findAll", () => {
