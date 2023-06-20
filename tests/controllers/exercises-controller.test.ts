@@ -74,16 +74,18 @@ describe("Exercises", async () => {
       });
     });
 
-    test("returns 400 bad request if exercise is invalid", async () => {
+    test("returns 500 internal server error if exercise is invalid", async () => {
       const response = await request
         .post("/exercises")
         .send({ type: ExerciseTypes.STRETCHING_AND_WARM_UP })
-        .expect(400);
+        .expect(500);
 
       expect(response.body).toStrictEqual(
         expect.objectContaining({
-          error: "Bad Request",
-          message: expect.stringContaining("invalid_type"),
+          error: expect.arrayContaining([
+            expect.objectContaining({ code: "invalid_type" }),
+          ]),
+          message: "VALIDATION_ERROR",
         })
       );
     });
@@ -113,7 +115,7 @@ describe("Exercises", async () => {
       });
     });
 
-    test("returns 400 bad request if exercise is invalid", async () => {
+    test("returns 500 internal server error if exercise is invalid", async () => {
       const service = exercisesService(repositories.exerciseRepository());
 
       const newExercise = await service.store({
@@ -123,13 +125,18 @@ describe("Exercises", async () => {
 
       const response = await request
         .post("/exercises")
-        .send({ id: newExercise.id, type: ExerciseTypes.STRETCHING_AND_WARM_UP })
-        .expect(400);
+        .send({
+          id: newExercise.id,
+          type: ExerciseTypes.STRETCHING_AND_WARM_UP,
+        })
+        .expect(500);
 
       expect(response.body).toStrictEqual(
         expect.objectContaining({
-          error: "Bad Request",
-          message: expect.stringContaining("invalid_type"),
+          error: expect.arrayContaining([
+            expect.objectContaining({ code: "invalid_type" }),
+          ]),
+          message: "VALIDATION_ERROR",
         })
       );
     });

@@ -14,7 +14,7 @@ describe("Tricks", async () => {
       });
       await service.store({
         name: "Trick 2",
-        type: { name: "New Type 2" }
+        type: { name: "New Type 2" },
       });
       await service.store({
         name: "Trick 3",
@@ -75,16 +75,18 @@ describe("Tricks", async () => {
       });
     });
 
-    test("returns 400 bad request if trick is invalid", async () => {
+    test("returns 500 internal server error if trick is invalid", async () => {
       const response = await request
         .post("/tricks")
         .send({ type: await getNewTrickType() })
-        .expect(400);
+        .expect(500);
 
       expect(response.body).toStrictEqual(
         expect.objectContaining({
-          error: "Bad Request",
-          message: expect.stringContaining("invalid_type"),
+          error: expect.arrayContaining([
+            expect.objectContaining({ code: "invalid_type" }),
+          ]),
+          message: "VALIDATION_ERROR",
         })
       );
     });
@@ -121,7 +123,7 @@ describe("Tricks", async () => {
       });
     });
 
-    test("returns 400 bad request if trick is invalid", async () => {
+    test("returns 500 internal server error if trick is invalid", async () => {
       const service = tricksService(repositories.trickRepository());
 
       const newExercise = await service.store({
@@ -135,12 +137,14 @@ describe("Tricks", async () => {
           id: newExercise.id,
           type: await getNewTrickType(),
         })
-        .expect(400);
+        .expect(500);
 
       expect(response.body).toStrictEqual(
         expect.objectContaining({
-          error: "Bad Request",
-          message: expect.stringContaining("invalid_type"),
+          error: expect.arrayContaining([
+            expect.objectContaining({ code: "invalid_type" }),
+          ]),
+          message: "VALIDATION_ERROR",
         })
       );
     });

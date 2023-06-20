@@ -1,16 +1,16 @@
-import client from "../infra/db/instance";
-import { Request, Response } from "./types";
+import client from "../../infra/db/instance";
+import { Request, Response } from "../types";
 
 const isDBLive = async () => {
   try {
     await client.$queryRaw`SELECT * FROM pg_tables WHERE schemaname='public'`;
-    return true;
+    return 'live';
   } catch (error) {
-    return false;
+    return 'dead';
   }
 };
 
-const health = async (_: Request, response: Response) => {
+const healthController = async (_: Request, response: Response) => {
   const status = {
     db: await isDBLive(),
     version: "1.0.0",
@@ -19,4 +19,4 @@ const health = async (_: Request, response: Response) => {
   return response.status(200).send(status);
 };
 
-export default health;
+export default healthController;

@@ -1,4 +1,3 @@
-import { object } from "zod";
 import repositories from "../../src/infra/repositories";
 import { FocusTypes } from "../../src/infra/schemas/class-plan-schema";
 import classPlansService from "../../src/infra/services/class-plans-service";
@@ -98,7 +97,7 @@ describe("ClassPlans", async () => {
       );
     });
 
-    test("returns 400 bad request if class plan is invalid", async () => {
+    test("returns 500 internal server error if class plan is invalid", async () => {
       const response = await request
         .post("/class-plans")
         .send({
@@ -106,12 +105,14 @@ describe("ClassPlans", async () => {
           focusType1: FocusTypes.AMBIDEXTERITY,
           focusType2: FocusTypes.GENERAL_FLEXIBILITY,
         })
-        .expect(400);
+        .expect(500);
 
       expect(response.body).toStrictEqual(
         expect.objectContaining({
-          error: "Bad Request",
-          message: expect.stringContaining("invalid_type"),
+          error: expect.arrayContaining([
+            expect.objectContaining({ code: "invalid_type" }),
+          ]),
+          message: "VALIDATION_ERROR",
         })
       );
     });
@@ -142,18 +143,18 @@ describe("ClassPlans", async () => {
         })
         .expect(200);
 
-        expect(response.body).toStrictEqual(
-          expect.objectContaining({
-            id: expect.any(Number),
-            name: "Plan 2",
-            classNumber: "1",
-            focusType1: FocusTypes.AMBIDEXTERITY,
-            focusType2: FocusTypes.GENERAL_FLEXIBILITY,
-          })
-        );
+      expect(response.body).toStrictEqual(
+        expect.objectContaining({
+          id: expect.any(Number),
+          name: "Plan 2",
+          classNumber: "1",
+          focusType1: FocusTypes.AMBIDEXTERITY,
+          focusType2: FocusTypes.GENERAL_FLEXIBILITY,
+        })
+      );
     });
 
-    test("returns 400 bad request if class plan is invalid", async () => {
+    test("returns 500 internal server error if class plan is invalid", async () => {
       const service = classPlansService(repositories.classPlanRepository());
 
       const newClassPlan = await service.store({
@@ -173,12 +174,14 @@ describe("ClassPlans", async () => {
           focusType1: FocusTypes.AMBIDEXTERITY,
           focusType2: FocusTypes.GENERAL_FLEXIBILITY,
         })
-        .expect(400);
+        .expect(500);
 
       expect(response.body).toStrictEqual(
         expect.objectContaining({
-          error: "Bad Request",
-          message: expect.stringContaining("invalid_type"),
+          error: expect.arrayContaining([
+            expect.objectContaining({ code: "invalid_type" }),
+          ]),
+          message: "VALIDATION_ERROR",
         })
       );
     });
