@@ -1,8 +1,10 @@
-import { User } from './User';
+import { UpdateUser, User } from "./User";
 
 interface UserRepository {
-  store: (entry: Omit<User, "id">) => Promise<User>;
-  update: (entry: User) => Promise<User>;
+  store: (
+    user: Omit<User, "id" | "createdAt">
+  ) => Promise<Omit<User, "password" | "salt">>;
+  update: (user: UpdateUser) => Promise<Omit<User, "password" | "salt">>;
   findByEmail: (email: string) => Promise<User | null>;
 }
 
