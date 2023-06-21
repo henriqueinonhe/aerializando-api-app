@@ -1,9 +1,16 @@
 import repositories from "../../src/infra/repositories";
 import { ExerciseTypes } from "../../src/infra/schemas/exercise-schema";
 import exercisesService from "../../src/infra/services/exercises-service";
+import generateAccessToken from "../helpers/generate-access-token";
 import request from "../helpers/test-server";
 
 describe("Exercises", async () => {
+  let accessToken: string;
+
+  beforeAll(async () => {
+    accessToken = await generateAccessToken();
+  });
+
   describe("GET /exercises", () => {
     test("returns 200 OK with all exercises", async () => {
       const service = exercisesService(repositories.exerciseRepository());
@@ -21,7 +28,10 @@ describe("Exercises", async () => {
         type: ExerciseTypes.WARM_UP_AND_CONDITIONING,
       });
 
-      const response = await request.get("/exercises").expect(200);
+      const response = await request
+        .get("/exercises")
+        .set("authorization", accessToken)
+        .expect(200);
 
       expect(response.body).toHaveLength(3);
     });
@@ -38,13 +48,17 @@ describe("Exercises", async () => {
 
       const response = await request
         .get(`/exercises/${exercise.id}`)
+        .set("authorization", accessToken)
         .expect(200);
 
       expect(response.body.id).toBe(exercise.id);
     });
 
     test("returns 404 not found", async () => {
-      const response = await request.get("/exercises/9999").expect(404);
+      const response = await request
+        .get("/exercises/9999")
+        .set("authorization", accessToken)
+        .expect(404);
 
       expect(response.body).toStrictEqual({
         error: "Not Found",
@@ -58,6 +72,7 @@ describe("Exercises", async () => {
     test("returns 201 created with new exercise", async () => {
       const response = await request
         .post("/exercises")
+        .set("authorization", accessToken)
         .send({
           name: "Exercise 1",
           type: ExerciseTypes.STRETCHING_AND_WARM_UP,
@@ -77,6 +92,7 @@ describe("Exercises", async () => {
     test("returns 500 internal server error if exercise is invalid", async () => {
       const response = await request
         .post("/exercises")
+        .set("authorization", accessToken)
         .send({ type: ExerciseTypes.STRETCHING_AND_WARM_UP })
         .expect(500);
 
@@ -102,6 +118,7 @@ describe("Exercises", async () => {
 
       const response = await request
         .put("/exercises")
+        .set("authorization", accessToken)
         .send({ ...newExercise, description: "run so fast" })
         .expect(200);
 
@@ -125,6 +142,7 @@ describe("Exercises", async () => {
 
       const response = await request
         .post("/exercises")
+        .set("authorization", accessToken)
         .send({
           id: newExercise.id,
           type: ExerciseTypes.STRETCHING_AND_WARM_UP,
@@ -151,11 +169,17 @@ describe("Exercises", async () => {
         type: ExerciseTypes.STRETCHING_AND_WARM_UP,
       });
 
-      await request.delete(`/exercises/${exercise.id}`).expect(204);
+      await request
+        .delete(`/exercises/${exercise.id}`)
+        .set("authorization", accessToken)
+        .expect(204);
     });
 
     test("returns 404 bad request", async () => {
-      const response = await request.delete("/exercises/222222").expect(404);
+      const response = await request
+        .delete("/exercises/222222")
+        .set("authorization", accessToken)
+        .expect(404);
 
       expect(response.body).toStrictEqual({
         error: "Not Found",

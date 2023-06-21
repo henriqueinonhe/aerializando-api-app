@@ -1,9 +1,16 @@
 import repositories from "../../src/infra/repositories";
 import tricksService from "../../src/infra/services/tricks-service";
 import { getNewTrickType } from "../helpers/factories/trick-type-factory";
+import generateAccessToken from "../helpers/generate-access-token";
 import request from "../helpers/test-server";
 
 describe("Tricks", async () => {
+  let accessToken: string;
+
+  beforeAll(async () => {
+    accessToken = await generateAccessToken();
+  });
+
   describe("GET /tricks", () => {
     test("returns 200 OK with all tricks", async () => {
       const service = tricksService(repositories.trickRepository());
@@ -21,7 +28,10 @@ describe("Tricks", async () => {
         type: await getNewTrickType(),
       });
 
-      const response = await request.get("/tricks").expect(200);
+      const response = await request
+        .get("/tricks")
+        .set("authorization", accessToken)
+        .expect(200);
 
       expect(response.body).toHaveLength(3);
     });
@@ -36,13 +46,19 @@ describe("Tricks", async () => {
         type: await getNewTrickType(),
       });
 
-      const response = await request.get(`/tricks/${trick.id}`).expect(200);
+      const response = await request
+        .get(`/tricks/${trick.id}`)
+        .set("authorization", accessToken)
+        .expect(200);
 
       expect(response.body.id).toBe(trick.id);
     });
 
     test("returns 404 not found", async () => {
-      const response = await request.get("/tricks/9999").expect(404);
+      const response = await request
+        .get("/tricks/9999")
+        .set("authorization", accessToken)
+        .expect(404);
 
       expect(response.body).toStrictEqual({
         error: "Not Found",
@@ -56,6 +72,7 @@ describe("Tricks", async () => {
     test("returns 201 created with new trick", async () => {
       const response = await request
         .post("/tricks")
+        .set("authorization", accessToken)
         .send({
           name: "Trick 1",
           type: await getNewTrickType(),
@@ -78,6 +95,7 @@ describe("Tricks", async () => {
     test("returns 500 internal server error if trick is invalid", async () => {
       const response = await request
         .post("/tricks")
+        .set("authorization", accessToken)
         .send({ type: await getNewTrickType() })
         .expect(500);
 
@@ -103,6 +121,7 @@ describe("Tricks", async () => {
 
       const response = await request
         .put("/tricks")
+        .set("authorization", accessToken)
         .send({
           ...newExercise,
           type: { name: "New Type" },
@@ -133,6 +152,7 @@ describe("Tricks", async () => {
 
       const response = await request
         .post("/tricks")
+        .set("authorization", accessToken)
         .send({
           id: newExercise.id,
           type: await getNewTrickType(),
@@ -159,11 +179,17 @@ describe("Tricks", async () => {
         type: await getNewTrickType(),
       });
 
-      await request.delete(`/tricks/${trick.id}`).expect(204);
+      await request
+        .delete(`/tricks/${trick.id}`)
+        .set("authorization", accessToken)
+        .expect(204);
     });
 
     test("returns 404 bad request", async () => {
-      const response = await request.delete("/tricks/222222").expect(404);
+      const response = await request
+        .delete("/tricks/222222")
+        .set("authorization", accessToken)
+        .expect(404);
 
       expect(response.body).toStrictEqual({
         error: "Not Found",

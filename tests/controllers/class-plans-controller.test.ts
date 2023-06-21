@@ -3,9 +3,16 @@ import { FocusTypes } from "../../src/infra/schemas/class-plan-schema";
 import classPlansService from "../../src/infra/services/class-plans-service";
 import { getExercises } from "../helpers/factories/exercises-factory";
 import { getTricks } from "../helpers/factories/tricks-factory";
+import generateAccessToken from "../helpers/generate-access-token";
 import request from "../helpers/test-server";
 
 describe("ClassPlans", async () => {
+  let accessToken: string;
+
+  beforeAll(async () => {
+    accessToken = await generateAccessToken();
+  });
+
   describe("GET /class-plans", () => {
     test("returns 200 OK with all exercises", async () => {
       const service = classPlansService(repositories.classPlanRepository());
@@ -35,7 +42,10 @@ describe("ClassPlans", async () => {
         exerciseBlocs: [{ exercises: await getExercises() }],
       });
 
-      const response = await request.get("/class-plans").expect(200);
+      const response = await request
+        .get("/class-plans")
+        .set("authorization", accessToken)
+        .expect(200);
 
       expect(response.body).toHaveLength(3);
     });
@@ -56,13 +66,17 @@ describe("ClassPlans", async () => {
 
       const response = await request
         .get(`/class-plans/${classPlan.id}`)
+        .set("authorization", accessToken)
         .expect(200);
 
       expect(response.body.id).toBe(classPlan.id);
     });
 
     test("returns 404 not found", async () => {
-      const response = await request.get("/class-plans/9999").expect(404);
+      const response = await request
+        .get("/class-plans/9999")
+        .set("authorization", accessToken)
+        .expect(404);
 
       expect(response.body).toStrictEqual({
         error: "Not Found",
@@ -76,6 +90,7 @@ describe("ClassPlans", async () => {
     test("returns 201 created with new class plan", async () => {
       const response = await request
         .post("/class-plans")
+        .set("authorization", accessToken)
         .send({
           name: "Plan 1",
           focusType1: FocusTypes.AMBIDEXTERITY,
@@ -100,6 +115,7 @@ describe("ClassPlans", async () => {
     test("returns 500 internal server error if class plan is invalid", async () => {
       const response = await request
         .post("/class-plans")
+        .set("authorization", accessToken)
         .send({
           name: "Plan 1",
           focusType1: FocusTypes.AMBIDEXTERITY,
@@ -135,6 +151,7 @@ describe("ClassPlans", async () => {
 
       const response = await request
         .put("/class-plans")
+        .set("authorization", accessToken)
         .send({
           id: newClassPlan.id,
           name: "Plan 2",
@@ -168,6 +185,7 @@ describe("ClassPlans", async () => {
 
       const response = await request
         .post("/class-plans")
+        .set("authorization", accessToken)
         .send({
           id: newClassPlan.id,
           name: "Plan 1",
@@ -200,11 +218,17 @@ describe("ClassPlans", async () => {
         exerciseBlocs: [{ exercises: await getExercises() }],
       });
 
-      await request.delete(`/class-plans/${classPlan.id}`).expect(204);
+      await request
+        .delete(`/class-plans/${classPlan.id}`)
+        .set("authorization", accessToken)
+        .expect(204);
     });
 
     test("returns 404 bad request", async () => {
-      const response = await request.delete("/class-plans/222222").expect(404);
+      const response = await request
+        .delete("/class-plans/222222")
+        .set("authorization", accessToken)
+        .expect(404);
 
       expect(response.body).toStrictEqual({
         error: "Not Found",
