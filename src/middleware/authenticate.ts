@@ -21,7 +21,7 @@ export default function authenticate(
       } else {
         return response
           .status(400)
-          .send({ message: "authorization header not found" });
+          .send({ message: "Authorization header not found" });
       }
     } else {
       next();
