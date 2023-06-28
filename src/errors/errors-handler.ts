@@ -13,7 +13,6 @@ export default function errorsHandler(
   _: FastifyRequest,
   reply: FastifyReply
 ) {
-  console.log(error)
   if (error instanceof ZodError) {
     log.error(error);
     reply.status(500).send({

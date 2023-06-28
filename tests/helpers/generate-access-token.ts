@@ -5,7 +5,7 @@ import request from "../helpers/test-server";
 const generateAccessToken = async () => {
   const payload = {
     name: "John Doe",
-    email: "j@j.com",
+    email: "auth.user@j.com",
     password: "12345678",
     passwordConfirmation: "12345678",
   };
