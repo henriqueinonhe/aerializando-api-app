@@ -7,6 +7,7 @@ export const userSchema = z.object({
   password: z.string(),
   salt: z.string(),
   createdAt: z.date(),
+  revokedAccessTokens: z.array(z.string()).or(z.undefined()),
 });
 
 export const createUserSchema = z
@@ -25,3 +26,5 @@ export const loginSchema = z.object({
   email: z.string().email("INVALID_EMAIL").min(1, "REQUIRED_EMAIL"),
   password: z.string().min(8, "PASSWORD_LENGTH_MIN_8"),
 });
+
+export const logoutSchema = z.object({ userId: z.number() });

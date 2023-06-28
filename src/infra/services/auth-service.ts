@@ -26,7 +26,7 @@ const authService = (userRepository: UserRepository) => {
   const login = async (
     email: string,
     password: string,
-    getAccessToken: (user: Omit<User, "password" | "salt">) => string
+    getAccessToken: (user: Omit<User, "id" | "password" | "salt">) => string
   ) => {
     const user = await userRepository.findByEmail(email);
 
@@ -40,14 +40,22 @@ const authService = (userRepository: UserRepository) => {
 
     if (!correctPassword) throw new InvalidUserPasswordError();
 
-    const { password: userPassword, salt, ...userData } = user;
+    const { password: userPassword, salt, id, ...userData } = user;
 
     const accessToken = getAccessToken(userData);
 
     return accessToken;
   };
 
-  return { login };
+  const logout = async (accessToken: string, userEmail: string) => {
+    const user = await userRepository.findByEmail(userEmail);
+
+    if (!user) throw new UserEmailNotRegisteredError();
+
+    await userRepository.storeRevokedAccessToken(accessToken, user.id);
+  };
+
+  return { login, logout };
 };
 
 export default authService;

@@ -24,8 +24,8 @@ const build = () => {
 
   app.addHook(
     "onRequest",
-    function (request: Request, response: Response, next) {
-      authenticate(this, request, response, next);
+    async function (request: Request, response: Response) {
+      await authenticate(this.jwt, repositories, request, response);
     }
   );
 

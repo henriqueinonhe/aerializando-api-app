@@ -7,7 +7,7 @@ import request from "../helpers/test-server";
 describe("Exercises", async () => {
   let accessToken: string;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     accessToken = await generateAccessToken();
   });
 

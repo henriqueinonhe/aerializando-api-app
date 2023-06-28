@@ -226,4 +226,35 @@ describe("User", async () => {
       });
     });
   });
+
+  describe("POST /user/logout", () => {
+    test("returns 200 OK", async () => {
+      const payload = {
+        name: "John Doe",
+        email: "j@j.com",
+        password: "12345678",
+        passwordConfirmation: "12345678",
+      };
+
+      const userRepository = repositories.userRepository();
+      const service = userService(userRepository);
+
+      await service.store(payload);
+
+      const { email, password } = payload;
+
+      const response = await request
+        .post("/user/login")
+        .send({ email, password });
+
+      await request
+        .post("/user/logout")
+        .set("authorization", response.body.accessToken)
+        .expect(200);
+
+      const userNotLogged = await service.findByEmail(payload.email);
+
+      expect(userNotLogged?.revokedAccessTokens?.length).toBe(1);
+    });
+  });
 });

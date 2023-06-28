@@ -14,8 +14,8 @@ export default function loginUserController(
 
     const service = authService(userRepository());
 
-    const getAccessToken = (user: Omit<User, "password" | "salt">) => {
-      return jwt.sign(user, { expiresIn: "7d" });
+    const getAccessToken = (user: Omit<User, "id" | "password" | "salt">) => {
+      return jwt.sign(user, { expiresIn: "5m" });
     };
 
     const accessToken = await service.login(email, password, getAccessToken);

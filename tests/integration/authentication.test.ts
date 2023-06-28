@@ -56,4 +56,22 @@ describe("authentication route", () => {
       });
     });
   });
+
+  describe("when is user is not logged", () => {
+    test("returns 401 Unauthorized", async () => {
+      const accessToken = await generateAccessToken();
+
+      await request
+        .post("/user/logout")
+        .set("authorization", accessToken)
+        .expect(200);
+
+      const response = await request
+        .get("/exercises")
+        .set("authorization", accessToken)
+        .expect(401);
+
+      expect(response.body).toStrictEqual({ message: "Unauthorized" });
+    });
+  });
 });

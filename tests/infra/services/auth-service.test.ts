@@ -16,9 +16,11 @@ describe("authService", () => {
           password: "123456",
           passwordConfirmation: "123456",
         };
-        await userService(repositories.userRepository()).store(user);
+        const userRepository = repositories.userRepository();
 
-        const service = authService(repositories.userRepository());
+        await userService(userRepository).store(user);
+
+        const service = authService(userRepository);
 
         const accessToken = await service.login(
           user.email,
@@ -59,6 +61,45 @@ describe("authService", () => {
             () => "new token"
           );
         }).rejects.toThrowError(InvalidUserPasswordError);
+      });
+    });
+  });
+
+  describe("logout", () => {
+    test("stores user revoked access token", async () => {
+      const user = {
+        name: "John Doe",
+        email: "j@j.com",
+        password: "123456",
+        passwordConfirmation: "123456",
+      };
+      const userRepository = repositories.userRepository();
+
+      await userService(userRepository).store(user);
+
+      const service = authService(userRepository);
+
+      const accessToken = await service.login(
+        user.email,
+        user.password,
+        () => "new token"
+      );
+
+      await service.logout(accessToken, user.email);
+
+      const userNotLogged = await userRepository.findByEmail(user.email);
+
+      expect(userNotLogged?.revokedAccessTokens?.length).toBe(1);
+      expect(userNotLogged?.revokedAccessTokens?.[0]).toBe("new token");
+    });
+
+    describe("when user email does not exist", () => {
+      test("throws UserEmailNotRegisteredError exception", async () => {
+        const service = authService(repositories.userRepository());
+
+        expect(async () => {
+          await service.logout('accessToken', 'j@j.com');
+        }).rejects.toThrowError(UserEmailNotRegisteredError);
       });
     });
   });

@@ -9,7 +9,7 @@ import request from "../helpers/test-server";
 describe("ClassPlans", async () => {
   let accessToken: string;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     accessToken = await generateAccessToken();
   });
 
