@@ -16,7 +16,7 @@ export default function logoutUserController(
 
     const user = jwt.decode(authorization) as FastifyJWT["user"];
 
-    await service.logout(authorization, user.email);
+    await service.logout(String(user.iat), user.email);
 
     return response.status(200).send();
   };

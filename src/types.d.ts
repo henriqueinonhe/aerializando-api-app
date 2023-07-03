@@ -6,6 +6,7 @@ declare module "@fastify/jwt" {
       name: string;
       email: string;
       createdAt: string;
+      iat: number;
     };
   }
 }

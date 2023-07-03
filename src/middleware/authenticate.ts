@@ -48,7 +48,7 @@ export default async function authenticate(
 
     const { revokedAccessTokenIds } = user;
 
-    const isUserNotLogged = revokedAccessTokenIds?.includes(authorization);
+    const isUserNotLogged = revokedAccessTokenIds?.includes(String(userJWT.iat));
 
     if (isUserNotLogged) return unauthorizedResponse(response);
 
