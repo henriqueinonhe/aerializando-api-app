@@ -1,4 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 
-export type Request = FastifyRequest<{ Params: { id: string } }>;
+export type Request<Headers = {}> = FastifyRequest<{
+  Params: { id: string };
+  Headers: Headers;
+}>;
 export type Response = FastifyReply;

@@ -8,13 +8,14 @@ describe("userRepository", () => {
       name: "John Doe",
       email: "j@j.com",
       password: "123456",
+      salt: "salt",
     });
 
     expect(user).toStrictEqual({
       id: expect.any(Number),
       name: "John Doe",
       email: "j@j.com",
-      password: "123456",
+      createdAt: expect.any(Date),
     });
   });
 
@@ -25,6 +26,7 @@ describe("userRepository", () => {
       name: "John Doe",
       email: "j@j.com",
       password: "123456",
+      salt: "salt",
     });
 
     const updatedUser = await repository.update({
@@ -45,11 +47,12 @@ describe("userRepository", () => {
         name: "John Doe",
         email: "j@j.com",
         password: "123456",
+        salt: "salt",
       });
 
       const foundUser = await repository.findByEmail("j@j.com");
 
-      expect(foundUser?.email).toStrictEqual(user.email);
+      expect(foundUser?.email).toBe(user.email);
     });
 
     test("not found user", async () => {
@@ -58,6 +61,26 @@ describe("userRepository", () => {
       const foundUser = await repository.findByEmail("j@j.com");
 
       expect(foundUser).toBeNull();
+    });
+  });
+
+  describe("storeRevokedAccessToken", () => {
+    test("stores user revoked access token id", async () => {
+      const repository = repositories.userRepository();
+
+      const user = await repository.store({
+        name: "John Doe",
+        email: "j@j.com",
+        password: "123456",
+        salt: "salt",
+      });
+
+      await repository.storeRevokedAccessTokenId("tokenId", user.id);
+
+      const foundUser = await repository.findByEmail("j@j.com");
+
+      expect(foundUser?.revokedAccessTokenIds?.length).toBe(1);
+      expect(foundUser?.revokedAccessTokenIds?.[0]).toBe("tokenId");
     });
   });
 });
