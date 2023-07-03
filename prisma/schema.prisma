@@ -11,20 +11,20 @@ datasource db {
 }
 
 model User {
-  id                  Int                      @id @default(autoincrement())
-  email               String                   @unique
-  name                String
-  password            String
-  salt                String
-  createdAt           DateTime                 @default(now())
-  revokedAccessTokens UserRevokedAccessToken[]
+  id                    Int                        @id @default(autoincrement())
+  email                 String                     @unique
+  name                  String
+  password              String
+  salt                  String
+  createdAt             DateTime                   @default(now())
+  revokedAccessTokenIds UserRevokedAccessTokenId[]
 }
 
-model UserRevokedAccessToken {
-  id     Int    @id @default(autoincrement())
-  token  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId Int
+model UserRevokedAccessTokenId {
+  id      Int    @id @default(autoincrement())
+  tokenId String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
 }
 
 model ClassPlan {

@@ -254,7 +254,7 @@ describe("User", async () => {
 
       const userNotLogged = await service.findByEmail(payload.email);
 
-      expect(userNotLogged?.revokedAccessTokens?.length).toBe(1);
+      expect(userNotLogged?.revokedAccessTokenIds?.length).toBe(1);
     });
   });
 });

@@ -7,7 +7,7 @@ export const userSchema = z.object({
   password: z.string(),
   salt: z.string(),
   createdAt: z.date(),
-  revokedAccessTokens: z.array(z.string()).or(z.undefined()),
+  revokedAccessTokenIds: z.array(z.string()).or(z.undefined()),
 });
 
 export const createUserSchema = z

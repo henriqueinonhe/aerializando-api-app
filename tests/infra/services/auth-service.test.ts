@@ -1,3 +1,4 @@
+import { fastifyJwt } from "@fastify/jwt";
 import {
   InvalidUserPasswordError,
   UserEmailNotRegisteredError,
@@ -79,18 +80,12 @@ describe("authService", () => {
 
       const service = authService(userRepository);
 
-      const accessToken = await service.login(
-        user.email,
-        user.password,
-        () => "new token"
-      );
-
-      await service.logout(accessToken, user.email);
+      await service.logout("tokenId", user.email);
 
       const userNotLogged = await userRepository.findByEmail(user.email);
 
-      expect(userNotLogged?.revokedAccessTokens?.length).toBe(1);
-      expect(userNotLogged?.revokedAccessTokens?.[0]).toBe("new token");
+      expect(userNotLogged?.revokedAccessTokenIds?.length).toBe(1);
+      expect(userNotLogged?.revokedAccessTokenIds?.[0]).toBe("tokenId");
     });
 
     describe("when user email does not exist", () => {
@@ -98,7 +93,7 @@ describe("authService", () => {
         const service = authService(repositories.userRepository());
 
         expect(async () => {
-          await service.logout('accessToken', 'j@j.com');
+          await service.logout("tokenId", "j@j.com");
         }).rejects.toThrowError(UserEmailNotRegisteredError);
       });
     });

@@ -65,7 +65,7 @@ describe("userRepository", () => {
   });
 
   describe("storeRevokedAccessToken", () => {
-    test("stores user revoked access token", async () => {
+    test("stores user revoked access token id", async () => {
       const repository = repositories.userRepository();
 
       const user = await repository.store({
@@ -75,12 +75,12 @@ describe("userRepository", () => {
         salt: "salt",
       });
 
-      await repository.storeRevokedAccessToken("token", user.id);
+      await repository.storeRevokedAccessTokenId("tokenId", user.id);
 
       const foundUser = await repository.findByEmail("j@j.com");
 
-      expect(foundUser?.revokedAccessTokens?.length).toBe(1);
-      expect(foundUser?.revokedAccessTokens?.[0]).toBe("token");
+      expect(foundUser?.revokedAccessTokenIds?.length).toBe(1);
+      expect(foundUser?.revokedAccessTokenIds?.[0]).toBe("tokenId");
     });
   });
 });

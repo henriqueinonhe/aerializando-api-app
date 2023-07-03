@@ -22,7 +22,7 @@ describe("usersService", () => {
           password: expect.any(String),
           salt: expect.any(String),
           createdAt: expect.any(Date),
-          revokedAccessTokens: [],
+          revokedAccessTokenIds: [],
         });
       });
     });

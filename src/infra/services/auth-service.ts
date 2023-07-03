@@ -47,12 +47,12 @@ const authService = (userRepository: UserRepository) => {
     return accessToken;
   };
 
-  const logout = async (accessToken: string, userEmail: string) => {
+  const logout = async (tokenId: string, userEmail: string) => {
     const user = await userRepository.findByEmail(userEmail);
 
     if (!user) throw new UserEmailNotRegisteredError();
 
-    await userRepository.storeRevokedAccessToken(accessToken, user.id);
+    await userRepository.storeRevokedAccessTokenId(tokenId, user.id);
   };
 
   return { login, logout };

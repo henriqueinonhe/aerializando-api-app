@@ -46,9 +46,9 @@ export default async function authenticate(
 
     if (!user) return unauthorizedResponse(response);
 
-    const { revokedAccessTokens } = user;
+    const { revokedAccessTokenIds } = user;
 
-    const isUserNotLogged = revokedAccessTokens?.includes(authorization);
+    const isUserNotLogged = revokedAccessTokenIds?.includes(authorization);
 
     if (isUserNotLogged) return unauthorizedResponse(response);
 

@@ -5,8 +5,8 @@ import { parserUser } from "../parsers/user-parsers";
 
 const makeUserRepository = (): UserRepository => ({
   store: async (
-    user: Omit<User, "id" | "createdAt" | "revokedAccessTokens">
-  ): Promise<Omit<User, "password" | "salt" | "revokedAccessTokens">> => {
+    user: Omit<User, "id" | "createdAt" | "revokedAccessTokenIds">
+  ): Promise<Omit<User, "password" | "salt" | "revokedAccessTokenIds">> => {
     const { password, salt, ...result } = await client.user.create({
       data: user,
     });
@@ -15,7 +15,7 @@ const makeUserRepository = (): UserRepository => ({
   },
   update: async (
     user: UpdateUser
-  ): Promise<Omit<User, "password" | "salt" | "revokedAccessTokens">> => {
+  ): Promise<Omit<User, "password" | "salt" | "revokedAccessTokenIds">> => {
     const { password, salt, ...result } = await client.user.update({
       where: { id: user.id },
       data: user,
@@ -26,14 +26,14 @@ const makeUserRepository = (): UserRepository => ({
   findByEmail: async (email: string): Promise<User | null> => {
     const result = await client.user.findUnique({
       where: { email },
-      include: { revokedAccessTokens: true },
+      include: { revokedAccessTokenIds: true },
     });
 
     return result ? parserUser(result) : null;
   },
-  storeRevokedAccessToken: async (token: string, userId: number) => {
-    await client.userRevokedAccessToken.create({
-      data: { token, user: { connect: { id: userId } } },
+  storeRevokedAccessTokenId: async (tokenId: string, userId: number) => {
+    await client.userRevokedAccessTokenId.create({
+      data: { tokenId, user: { connect: { id: userId } } },
     });
   },
 });
