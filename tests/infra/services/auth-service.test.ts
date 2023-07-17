@@ -1,4 +1,3 @@
-import { fastifyJwt } from "@fastify/jwt";
 import {
   InvalidUserPasswordError,
   UserEmailNotRegisteredError,

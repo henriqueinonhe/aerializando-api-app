@@ -1,8 +1,8 @@
-import { FastifyJWT, JWT } from "@fastify/jwt";
+import { JWT } from "@fastify/jwt";
 import { Request, Response } from "../controllers/types";
 import { Repositories } from "../infra/repositories";
 
-type UserJWT = FastifyJWT["user"] | null;
+type UserJWT = { email: string, iat: number } | null;
 
 const authenticateRoutes = [
   "exercises",

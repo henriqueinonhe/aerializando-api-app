@@ -1,12 +1,14 @@
+import { FastifyInstance } from "fastify";
 import client from "../../infra/db/instance";
 import { Request, Response } from "../types";
+import docs from "./docs";
 
 const isDBLive = async () => {
   try {
     await client.$queryRaw`SELECT * FROM pg_tables WHERE schemaname='public'`;
-    return 'live';
+    return "live";
   } catch (error) {
-    return 'dead';
+    return "dead";
   }
 };
 
@@ -19,4 +21,6 @@ const healthController = async (_: Request, response: Response) => {
   return response.status(200).send(status);
 };
 
-export default healthController;
+export default async function routes(fastify: FastifyInstance) {
+  fastify.get("/health", docs.health, healthController);
+}
