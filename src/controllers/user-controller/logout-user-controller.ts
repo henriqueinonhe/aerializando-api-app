@@ -1,4 +1,4 @@
-import { FastifyJWT, JWT } from "@fastify/jwt";
+import { JWT } from "@fastify/jwt";
 import { Repositories } from "../../infra/repositories";
 import authService from "../../infra/services/auth-service";
 import { Request, Response } from "../types";
@@ -14,7 +14,7 @@ export default function logoutUserController(
     const { authorization } = request.headers;
     const service = authService(userRepository());
 
-    const user = jwt.decode(authorization) as FastifyJWT["user"];
+    const user = jwt.decode(authorization) as { email: string, iat: number };
 
     await service.logout(String(user.iat), user.email);
 

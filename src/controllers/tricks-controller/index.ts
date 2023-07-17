@@ -5,13 +5,22 @@ import deleteTrickController from "./delete-trick-controller";
 import fetchTricksController from "./fetch-tricks-controller";
 import findTrickController from "./find-trick-controller";
 import updateTrickController from "./update-trick-controller";
+import docs from "./docs";
 
 export default function routes(repositories: Repositories) {
   return async (fastify: FastifyInstance) => {
-    fastify.get("/tricks", fetchTricksController(repositories));
-    fastify.get("/tricks/:id", findTrickController(repositories));
-    fastify.post("/tricks", createTrickController(repositories));
-    fastify.put("/tricks", updateTrickController(repositories));
-    fastify.delete("/tricks/:id", deleteTrickController(repositories));
+    fastify.get("/tricks", docs.fetchAll, fetchTricksController(repositories));
+    fastify.get(
+      "/tricks/:id",
+      docs.fetchById,
+      findTrickController(repositories)
+    );
+    fastify.post("/tricks", docs.create, createTrickController(repositories));
+    fastify.put("/tricks", docs.update, updateTrickController(repositories));
+    fastify.delete(
+      "/tricks/:id",
+      docs.delete,
+      deleteTrickController(repositories)
+    );
   };
 }
