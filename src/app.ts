@@ -9,6 +9,7 @@ import userRoutes from "./controllers/user-controller";
 import errorsHandler from "./errors/errors-handler";
 import repositories from "./infra/repositories";
 import authenticate from "./middleware/authenticate";
+import appEnv from "./env";
 
 const build = () => {
   const app = fastify({ logger: true });
@@ -58,7 +59,7 @@ const build = () => {
   });
 
   app.register(healthRoute);
-  app.register(jwt, { secret: process.env.JWT_SECRET as string });
+  app.register(jwt, { secret: appEnv.jwtSecret as string });
   app.register(userRoutes(repositories));
   app.register(exercisesRoutes(repositories));
   app.register(tricksRoutes(repositories));
@@ -67,7 +68,8 @@ const build = () => {
   app.addHook(
     "onRequest",
     async function (request: Request, response: Response) {
-      await authenticate(this.jwt, repositories, request, response);
+      if (appEnv.useAuth)
+        await authenticate(this.jwt, repositories, request, response);
     }
   );
 
