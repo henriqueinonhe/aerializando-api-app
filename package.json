@@ -5,7 +5,7 @@
   "main": "build/server.js",
   "scripts": {
     "build": "rimraf ./build && tsc",
-    "start:dev": "npx nodemon",
+    "start:dev": "npx prisma migrate dev && npx nodemon",
     "start": "npm run build && node build/server.js",
     "test": "./scripts/run-integration.sh",
     "coverage": "vitest run --coverage"
