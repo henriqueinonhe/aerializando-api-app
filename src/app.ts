@@ -65,13 +65,14 @@ const build = () => {
   app.register(tricksRoutes(repositories));
   app.register(classPlansRoutes(repositories));
 
-  app.addHook(
-    "onRequest",
-    async function (request: Request, response: Response) {
-      if (appEnv.useAuth)
-        await authenticate(this.jwt, repositories, request, response);
-    }
-  );
+  // Bypass auth for now
+  // app.addHook(
+  //   "onRequest",
+  //   async function (request: Request, response: Response) {
+  //     if (appEnv.useAuth)
+  //       await authenticate(this.jwt, repositories, request, response);
+  //   }
+  // );
 
   app.setErrorHandler(function (error, request, reply) {
     errorsHandler(this.log, error, request, reply);
