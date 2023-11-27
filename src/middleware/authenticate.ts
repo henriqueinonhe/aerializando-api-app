@@ -2,7 +2,7 @@ import { JWT } from "@fastify/jwt";
 import { Request, Response } from "../controllers/types";
 import { Repositories } from "../infra/repositories";
 
-type UserJWT = { email: string, iat: number } | null;
+type UserJWT = { email: string; iat: number } | null;
 
 const authenticateRoutes = [
   "exercises",
@@ -25,7 +25,7 @@ export default async function authenticate(
   jwt: JWT,
   { userRepository }: Repositories,
   request: Request,
-  response: Response
+  response: Response,
 ) {
   try {
     if (!isAuthenticateRoute(request.routerPath)) return;
@@ -48,7 +48,9 @@ export default async function authenticate(
 
     const { revokedAccessTokenIds } = user;
 
-    const isUserNotLogged = revokedAccessTokenIds?.includes(String(userJWT.iat));
+    const isUserNotLogged = revokedAccessTokenIds?.includes(
+      String(userJWT.iat),
+    );
 
     if (isUserNotLogged) return unauthorizedResponse(response);
 

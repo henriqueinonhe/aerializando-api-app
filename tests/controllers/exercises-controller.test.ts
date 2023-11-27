@@ -102,7 +102,7 @@ describe("Exercises", async () => {
             expect.objectContaining({ code: "invalid_type" }),
           ]),
           message: "VALIDATION_ERROR",
-        })
+        }),
       );
     });
   });
@@ -155,7 +155,7 @@ describe("Exercises", async () => {
             expect.objectContaining({ code: "invalid_type" }),
           ]),
           message: "VALIDATION_ERROR",
-        })
+        }),
       );
     });
   });

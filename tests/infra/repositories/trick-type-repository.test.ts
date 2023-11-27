@@ -24,7 +24,7 @@ describe("trickTypeRepository", () => {
       });
 
       await expect(
-        repository.store({ name: trick.name })
+        repository.store({ name: trick.name }),
       ).rejects.toThrowError();
     });
   });

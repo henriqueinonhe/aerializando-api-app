@@ -105,7 +105,7 @@ describe("Tricks", async () => {
             expect.objectContaining({ code: "invalid_type" }),
           ]),
           message: "VALIDATION_ERROR",
-        })
+        }),
       );
     });
   });
@@ -165,7 +165,7 @@ describe("Tricks", async () => {
             expect.objectContaining({ code: "invalid_type" }),
           ]),
           message: "VALIDATION_ERROR",
-        })
+        }),
       );
     });
   });

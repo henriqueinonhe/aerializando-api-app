@@ -37,10 +37,10 @@ describe("exerciseRepository", () => {
 
     expect(updatedExercise.description).toBe("run so fast");
     expect(updatedExercise.videoLink).toBe(
-      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     );
     expect(updatedExercise.videoThumbnail).toBe(
-      "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     );
   });
 

@@ -3,7 +3,9 @@ import { createUserSchema } from "../../infra/schemas/user-schema";
 import userService from "../../infra/services/users-service";
 import { Request, Response } from "../types";
 
-export default function registerUserController({ userRepository }: Repositories) {
+export default function registerUserController({
+  userRepository,
+}: Repositories) {
   return async (request: Request, response: Response) => {
     const payload = createUserSchema.parse(request.body);
 

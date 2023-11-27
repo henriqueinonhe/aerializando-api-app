@@ -10,6 +10,7 @@ import errorsHandler from "./errors/errors-handler";
 import repositories from "./infra/repositories";
 import authenticate from "./middleware/authenticate";
 import appEnv from "./env";
+import cors from "@fastify/cors";
 
 const build = () => {
   const app = fastify({ logger: true });
@@ -46,7 +47,7 @@ const build = () => {
     transformSpecification: (
       swaggerObject: object,
       req: Request,
-      res: Response
+      res: Response,
     ) => {
       return swaggerObject;
     },
@@ -64,13 +65,14 @@ const build = () => {
   app.register(exercisesRoutes(repositories));
   app.register(tricksRoutes(repositories));
   app.register(classPlansRoutes(repositories));
+  app.register(cors);
 
   app.addHook(
     "onRequest",
     async function (request: Request, response: Response) {
       if (appEnv.useAuth)
         await authenticate(this.jwt, repositories, request, response);
-    }
+    },
   );
 
   app.setErrorHandler(function (error, request, reply) {

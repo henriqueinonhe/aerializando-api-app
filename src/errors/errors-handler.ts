@@ -11,7 +11,7 @@ export default function errorsHandler(
   log: FastifyBaseLogger,
   error: Error,
   _: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ) {
   if (error instanceof ZodError) {
     log.error(error);

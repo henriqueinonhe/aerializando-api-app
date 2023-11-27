@@ -9,7 +9,6 @@ const makeTrickTypeRepository = (): TrickTypeRepository => ({
   store: async (trickType: Omit<TrickType, "id">): Promise<TrickType> => {
     return (await client.trickType.create({ data: trickType })) as TrickType;
   },
-  
 });
 
 export default makeTrickTypeRepository;

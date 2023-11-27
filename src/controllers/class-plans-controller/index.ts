@@ -12,27 +12,27 @@ export default function routes(repositories: Repositories) {
     fastify.get(
       "/class-plans",
       docs.fetchAll,
-      fetchClassPlansController(repositories)
+      fetchClassPlansController(repositories),
     );
     fastify.get(
       "/class-plans/:id",
       docs.fetchById,
-      findClassPlanController(repositories)
+      findClassPlanController(repositories),
     );
     fastify.post(
       "/class-plans",
       docs.create,
-      createClassPlanController(repositories)
+      createClassPlanController(repositories),
     );
     fastify.put(
       "/class-plans",
       docs.update,
-      updateClassPlanController(repositories)
+      updateClassPlanController(repositories),
     );
     fastify.delete(
       "/class-plans/:id",
       docs.delete,
-      deleteClassPlanController(repositories)
+      deleteClassPlanController(repositories),
     );
   };
 }

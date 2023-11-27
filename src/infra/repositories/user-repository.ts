@@ -5,7 +5,7 @@ import { parserUser } from "../parsers/user-parsers";
 
 const makeUserRepository = (): UserRepository => ({
   store: async (
-    user: Omit<User, "id" | "createdAt" | "revokedAccessTokenIds">
+    user: Omit<User, "id" | "createdAt" | "revokedAccessTokenIds">,
   ): Promise<Omit<User, "password" | "salt" | "revokedAccessTokenIds">> => {
     const { password, salt, ...result } = await client.user.create({
       data: user,
@@ -14,7 +14,7 @@ const makeUserRepository = (): UserRepository => ({
     return result;
   },
   update: async (
-    user: UpdateUser
+    user: UpdateUser,
   ): Promise<Omit<User, "password" | "salt" | "revokedAccessTokenIds">> => {
     const { password, salt, ...result } = await client.user.update({
       where: { id: user.id },

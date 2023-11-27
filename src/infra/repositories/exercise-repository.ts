@@ -9,7 +9,9 @@ const makeExerciseRepository = (): ExerciseRepository => ({
     return parseExercises(result);
   },
   findInBatch: async (ids: number[]): Promise<Exercise[]> => {
-    const result = await client.exercise.findMany({ where: { id: { in: ids } } });
+    const result = await client.exercise.findMany({
+      where: { id: { in: ids } },
+    });
     return parseExercises(result);
   },
   findById: async (id: number): Promise<Exercise | null> => {

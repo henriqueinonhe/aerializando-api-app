@@ -28,7 +28,7 @@ const makeClassPlanRepository = (): ClassPlanRepository => {
   };
 
   const store = async (
-    classPlan: Omit<ClassPlan, "id">
+    classPlan: Omit<ClassPlan, "id">,
   ): Promise<ClassPlan> => {
     const { tricks, exerciseBlocs, ...classPlanData } =
       parseClassPlan.toData(classPlan);
@@ -51,10 +51,10 @@ const makeClassPlanRepository = (): ClassPlanRepository => {
   };
 
   const update = async (
-    classPlan: Partial<ClassPlan> & { id: number }
+    classPlan: Partial<ClassPlan> & { id: number },
   ): Promise<ClassPlan> => {
     const { tricks, exerciseBlocs, ...classPlanData } = parseClassPlan.toData(
-      classPlan as ClassPlan
+      classPlan as ClassPlan,
     );
 
     const existentExercisesBlocs = exerciseBlocs?.filter(({ id }) => id);

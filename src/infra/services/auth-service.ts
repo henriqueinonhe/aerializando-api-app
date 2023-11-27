@@ -26,7 +26,7 @@ const authService = (userRepository: UserRepository) => {
   const login = async (
     email: string,
     password: string,
-    getAccessToken: (user: Omit<User, "id" | "password" | "salt">) => string
+    getAccessToken: (user: Omit<User, "id" | "password" | "salt">) => string,
   ) => {
     const user = await userRepository.findByEmail(email);
 

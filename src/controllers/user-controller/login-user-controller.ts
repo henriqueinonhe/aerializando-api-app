@@ -7,7 +7,7 @@ import { Request, Response } from "../types";
 
 export default function loginUserController(
   { userRepository }: Repositories,
-  jwt: JWT
+  jwt: JWT,
 ) {
   return async (request: Request, response: Response) => {
     const { email, password } = loginSchema.parse(request.body);

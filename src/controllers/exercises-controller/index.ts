@@ -12,27 +12,27 @@ export default function routes(repositories: Repositories) {
     fastify.get(
       "/exercises",
       docs.fetchAll,
-      fetchExercisesController(repositories)
+      fetchExercisesController(repositories),
     );
     fastify.get(
       "/exercises/:id",
       docs.fetchById,
-      findExerciseController(repositories)
+      findExerciseController(repositories),
     );
     fastify.post(
       "/exercises",
       docs.create,
-      createExerciseController(repositories)
+      createExerciseController(repositories),
     );
     fastify.put(
       "/exercises",
       docs.update,
-      updateExerciseController(repositories)
+      updateExerciseController(repositories),
     );
     fastify.delete(
       "/exercises/:id",
       docs.delete,
-      deleteExerciseController(repositories)
+      deleteExerciseController(repositories),
     );
   };
 }

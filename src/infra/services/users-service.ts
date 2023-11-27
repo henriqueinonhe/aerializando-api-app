@@ -16,8 +16,7 @@ const userService = (repository: UserRepository) => {
   const store = async (user: CreateUser): Promise<void> => {
     const userFound = await findByEmail(user.email);
 
-    if (userFound)
-      throw new UserEmailAlreadyExistsError();
+    if (userFound) throw new UserEmailAlreadyExistsError();
 
     const { password, passwordConfirmation, ...userData } = user;
 

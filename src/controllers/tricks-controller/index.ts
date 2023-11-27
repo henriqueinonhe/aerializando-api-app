@@ -13,14 +13,14 @@ export default function routes(repositories: Repositories) {
     fastify.get(
       "/tricks/:id",
       docs.fetchById,
-      findTrickController(repositories)
+      findTrickController(repositories),
     );
     fastify.post("/tricks", docs.create, createTrickController(repositories));
     fastify.put("/tricks", docs.update, updateTrickController(repositories));
     fastify.delete(
       "/tricks/:id",
       docs.delete,
-      deleteTrickController(repositories)
+      deleteTrickController(repositories),
     );
   };
 }

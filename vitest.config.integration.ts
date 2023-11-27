@@ -5,6 +5,6 @@ export default defineConfig({
     globals: true,
     include: ["tests/**/*.test.ts"],
     threads: false,
-    setupFiles: ['tests/helpers/setup.ts']
+    setupFiles: ["tests/helpers/setup.ts"],
   },
 });

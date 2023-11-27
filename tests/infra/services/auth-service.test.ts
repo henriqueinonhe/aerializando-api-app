@@ -25,7 +25,7 @@ describe("authService", () => {
         const accessToken = await service.login(
           user.email,
           user.password,
-          () => "new token"
+          () => "new token",
         );
 
         expect(accessToken).toBe("new token");
@@ -58,7 +58,7 @@ describe("authService", () => {
           await service.login(
             user.email,
             "invalid_password",
-            () => "new token"
+            () => "new token",
           );
         }).rejects.toThrowError(InvalidUserPasswordError);
       });

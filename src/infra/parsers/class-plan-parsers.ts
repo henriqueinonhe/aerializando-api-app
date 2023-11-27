@@ -25,7 +25,7 @@ export const parseClassPlan = {
         ({ id, exercises }: { id: number; exercises: any[] }) => ({
           id,
           exercises: parseExercises(exercises),
-        })
+        }),
       ),
     };
   },

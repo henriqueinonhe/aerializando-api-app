@@ -108,7 +108,7 @@ describe("ClassPlans", async () => {
           classNumber: "1",
           focusType1: FocusTypes.AMBIDEXTERITY,
           focusType2: FocusTypes.GENERAL_FLEXIBILITY,
-        })
+        }),
       );
     });
 
@@ -129,7 +129,7 @@ describe("ClassPlans", async () => {
             expect.objectContaining({ code: "invalid_type" }),
           ]),
           message: "VALIDATION_ERROR",
-        })
+        }),
       );
     });
   });
@@ -167,7 +167,7 @@ describe("ClassPlans", async () => {
           classNumber: "1",
           focusType1: FocusTypes.AMBIDEXTERITY,
           focusType2: FocusTypes.GENERAL_FLEXIBILITY,
-        })
+        }),
       );
     });
 
@@ -200,7 +200,7 @@ describe("ClassPlans", async () => {
             expect.objectContaining({ code: "invalid_type" }),
           ]),
           message: "VALIDATION_ERROR",
-        })
+        }),
       );
     });
   });

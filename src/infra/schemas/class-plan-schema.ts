@@ -29,7 +29,7 @@ export const classPlanSchema = z
       z.object({
         id: z.number().optional(),
         exercises: z.array(exerciseSchema),
-      })
+      }),
     ),
   })
   .strict();

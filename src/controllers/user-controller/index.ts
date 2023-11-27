@@ -10,17 +10,17 @@ export default function routes(repositories: Repositories) {
     fastify.post(
       "/user/register",
       docs.register,
-      registerUserController(repositories)
+      registerUserController(repositories),
     );
     fastify.post(
       "/user/login",
       docs.login,
-      loginUserController(repositories, fastify.jwt)
+      loginUserController(repositories, fastify.jwt),
     );
     fastify.post(
       "/user/logout",
       docs.logout,
-      logoutUserController(repositories, fastify.jwt)
+      logoutUserController(repositories, fastify.jwt),
     );
   };
 }

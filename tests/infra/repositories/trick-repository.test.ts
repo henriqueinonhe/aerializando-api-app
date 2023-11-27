@@ -71,10 +71,10 @@ describe("trickRepository", () => {
       expect(updatedTrick.description).toBe("run so fast");
       expect(updatedTrick.type.name).toBe("New trick type");
       expect(updatedTrick.videoLink).toBe(
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       );
       expect(updatedTrick.videoThumbnail).toBe(
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       );
     });
 
@@ -99,10 +99,10 @@ describe("trickRepository", () => {
       expect(updatedTrick.description).toBe("run so fast");
       expect(updatedTrick.type.name).toBe(trickType);
       expect(updatedTrick.videoLink).toBe(
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       );
       expect(updatedTrick.videoThumbnail).toBe(
-        "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       );
     });
   });
