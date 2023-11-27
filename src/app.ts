@@ -65,7 +65,10 @@ const build = () => {
   app.register(exercisesRoutes(repositories));
   app.register(tricksRoutes(repositories));
   app.register(classPlansRoutes(repositories));
-  app.register(cors);
+  app.register(cors, {
+    origin: "*",
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"],
+  });
 
   app.addHook(
     "onRequest",
