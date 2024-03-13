@@ -10,6 +10,6 @@ export default function fetchTricksController({
 
     const tricks = await service.findAll();
 
-    return response.status(200).send(tricks);
+    return response.status(200).send(JSON.stringify(tricks));
   };
 }

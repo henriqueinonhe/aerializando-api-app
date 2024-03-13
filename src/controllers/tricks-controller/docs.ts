@@ -73,7 +73,7 @@ const docs = {
       body: {
         type: "object",
         properties: {
-          type: { type: "string" },
+          type: { type: "object" },
           name: { type: "string" },
           description: { type: "string" },
           videoLink: { type: "string" },

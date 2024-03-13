@@ -24,6 +24,27 @@ const makeTrickRepository = (): TrickRepository => ({
   },
   store: async (trick: Omit<Trick, "id">): Promise<Trick> => {
     const { type, ...inputTrick } = trick;
+
+    const trickTypeCandidate = await client.trickType.findFirst({
+      where: {
+        name: type.name,
+      },
+    });
+
+    if (trickTypeCandidate) {
+      const data = {
+        ...inputTrick,
+        type: { connect: { id: trickTypeCandidate.id } },
+      };
+
+      const result = await client.trick.create({
+        data,
+        include: { type: true },
+      });
+
+      return parseTrick(result);
+    }
+
     const data = {
       ...inputTrick,
       ...(type.id
