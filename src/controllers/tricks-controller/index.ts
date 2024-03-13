@@ -22,5 +22,12 @@ export default function routes(repositories: Repositories) {
       docs.delete,
       deleteTrickController(repositories),
     );
+    fastify.get("/tricks/types", async (req, res) => {
+      const trickTypeRepo = repositories.trickTypeRepository();
+
+      const trickTypes = await trickTypeRepo.findAll();
+
+      res.status(200).send(trickTypes);
+    });
   };
 }
